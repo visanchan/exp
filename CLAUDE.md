@@ -14,8 +14,8 @@ at `.agents/skills/README.md` lists all of them:
 
 - `.agents/skills/local-dev-servers/SKILL.md` — backend + frontend, "the
   localhost URL won't open"
-- `.agents/skills/systematic-debugging/SKILL.md` — finding a cause instead of
-  guessing at fixes
+- `.agents/skills/debug-mantra/SKILL.md` — four-step debugging discipline;
+  recite, then reproduce / fail path / falsify / cross-reference
 - `.agents/skills/reviewing-ai-written-code/SKILL.md` — checking generated code
   before keeping it
 - `.agents/skills/session-handoff/SKILL.md` — carrying work across sessions

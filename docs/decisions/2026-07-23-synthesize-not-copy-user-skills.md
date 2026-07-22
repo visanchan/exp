@@ -38,6 +38,7 @@ actually has when working in this repository with a coding agent. Four were
 added:
 
 - `systematic-debugging` — reproduce, shrink, hypothesise, falsify, prove.
+  **Superseded the same day — see the second addendum below.**
 - `reviewing-ai-written-code` — the failure modes specific to generated code,
   and verifying an agent's claims about its own work.
 - `session-handoff` — carrying state, decisions and ruled-out approaches across
@@ -66,6 +67,31 @@ synthetic worked examples. Neither draws on the excluded private or third-party
 material. Financial modelling, inventory planning and customer-discovery methods
 remain inside `ai-class-operating-partner` for now; promote them the same way if
 they prove to be needed often enough to justify separate skills.
+
+**Second addendum, same day — `systematic-debugging` merged into
+`debug-mantra`.** The owner identified an existing user-level skill,
+`debug-mantra`, as worth keeping here. Checked for provenance: no third-party
+attribution, no licence or copyright marker, no private context — owner-authored,
+so redistribution is the owner's call and permitted.
+
+It overlapped the newly written `systematic-debugging` by roughly 60%: both
+covered reproduce, hypothesise and falsify. `write-a-repo-skill` says to merge
+near-duplicates rather than ship both, since an agent choosing between them
+chooses badly. So they were merged under the `debug-mantra` name, which the owner
+asked for and which is the more memorable trigger, and `systematic-debugging` was
+deleted.
+
+The merge was worth doing on the content alone. `debug-mantra` contributed
+material the newer skill lacked: the verbatim recitation as a commitment device,
+flaky-repro triage (raise the failure rate before debugging — 50% is workable,
+1% is not), the fail-path escalation order with uniquely tagged probes for
+single-grep cleanup, generating 3–5 ranked hypotheses to defeat anchoring,
+running the disproof before the proof, and the ledger requiring a new hypothesis
+to hold against every prior run rather than the most recent. `systematic-debugging`
+contributed bisection, reading stack traces, cause-versus-symptom, proving the
+fix with a regression test, the stuck checklist, and the agent-specific traps.
+
+Net: one skill stronger than either, and one fewer near-duplicate.
 
 ## Consequences
 

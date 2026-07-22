@@ -48,7 +48,7 @@ wrong at least once?*
 ```
 
 Name the folder in `kebab-case`, and make the name describe the **job**, not the
-topic: `systematic-debugging` beats `debugging-notes`.
+topic: `debug-mantra` beats `debugging-notes`.
 
 ## Frontmatter
 

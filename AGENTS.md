@@ -176,8 +176,8 @@ category while allowing the first to be freely created and destroyed.
     preservation. The default for repository work.
   - `local-dev-servers/SKILL.md` — starting or troubleshooting long-running dev
     servers, backend plus frontend, or a localhost URL that will not open.
-  - `systematic-debugging/SKILL.md` — finding the actual cause of a bug rather
-    than guessing at fixes.
+  - `debug-mantra/SKILL.md` — four-step debugging discipline, recited then
+    applied in order, before any fix is proposed.
   - `reviewing-ai-written-code/SKILL.md` — reviewing generated code before
     keeping or committing it.
   - `session-handoff/SKILL.md` — carrying work across a context limit, a session

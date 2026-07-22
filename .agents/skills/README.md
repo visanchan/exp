@@ -13,7 +13,7 @@ anything here.
 |---|---|
 | [`ai-class-operating-partner`](ai-class-operating-partner/SKILL.md) | Turning a class task into a defined, tested experiment with the learning preserved. The default for repository work. |
 | [`local-dev-servers`](local-dev-servers/SKILL.md) | An app needs a backend and a frontend running at once, a dev server will not stay up under an agent, or a `localhost` URL will not open. |
-| [`systematic-debugging`](systematic-debugging/SKILL.md) | Something throws, returns the wrong value, or works in one place and not another — especially after two or three fixes have already failed. |
+| [`debug-mantra`](debug-mantra/SKILL.md) | Something is broken, throwing or failing — especially after two or three attempted fixes have already missed. Recite the mantra, then work the four steps in order. |
 | [`reviewing-ai-written-code`](reviewing-ai-written-code/SKILL.md) | Before keeping, committing, or approving code an agent wrote. |
 | [`session-handoff`](session-handoff/SKILL.md) | A session is ending or straining, or work is passing to another agent or person. |
 | [`business-analysis`](business-analysis/SKILL.md) | Deciding whether something is worth doing, comparing options, working out unit economics or a break-even, or presenting numbers someone has to act on. |
@@ -28,7 +28,7 @@ it at the file directly — they are plain markdown and readable on their own.
 To invoke one explicitly:
 
 ```text
-Use $systematic-debugging — the login test passes locally and fails in CI.
+Use $debug-mantra — the login test passes locally and fails in CI.
 ```
 
 ## What is deliberately not here
