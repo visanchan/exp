@@ -69,10 +69,10 @@ would have prevented this:
 
 ## Recommended next step
 
-- **Next step:** delete the folder. It holds no source, no notes, and no
-  history; only the `node_modules` install would be lost, and that is
-  regenerable by definition.
-- **Rationale:** keeping it preserves nothing and costs 59 MB. This document is
-  the part worth keeping, and it no longer depends on the folder existing.
+- **Next step:** done — the folder was deleted on 2026-07-23 after this document
+  was written. It held no source, no notes, and no history; the 57 MB of
+  `node_modules` was the only thing lost, and that is regenerable by definition.
+- **Rationale:** keeping it preserved nothing. This document is the part worth
+  keeping, and it does not depend on the folder existing.
 - **Follow-up experiment:** none. If the "insight observer" idea is revived, it
   starts fresh with a definition first.
