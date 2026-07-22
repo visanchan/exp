@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Meowseum Reel Studio</title>
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+<header class="masthead">
+  <p class="eyebrow">exp-003</p>
+  <h1>Meowseum Reel Studio</h1>
+  <p class="sub">A page from the museum becomes a narrated vertical Reel.</p>
+  <p class="provider" id="provider">checking providers…</p>
+</header>
+
+<main>
+
+  <!-- 1. source -->
+  <section class="panel" id="panel-source">
+    <h2><span class="num">1</span> Choose the source</h2>
+    <div class="tabs" id="source-tabs">
+      <button class="tab is-on" data-type="product">Collection pieces</button>
+      <button class="tab" data-type="journal">Journal articles</button>
+    </div>
+    <div class="grid" id="source-grid"><p class="muted">loading…</p></div>
+  </section>
+
+  <!-- 2. extracted -->
+  <section class="panel is-hidden" id="panel-extract">
+    <h2><span class="num">2</span> What was extracted</h2>
+    <div id="extract-body"></div>
+  </section>
+
+  <!-- 3. settings -->
+  <section class="panel is-hidden" id="panel-settings">
+    <h2><span class="num">3</span> Set the Reel</h2>
+    <div class="fields">
+      <label>Protagonist
+        <select id="protagonist">
+          <option value="curator">Cat the Curator (brand)</option>
+          <option value="my-cat">My own cat (upload a photo)</option>
+        </select>
+      </label>
+      <label>Concept
+        <select id="concept">
+          <option value="funny">Funny — most shareable</option>
+          <option value="source-faithful">Source-faithful</option>
+          <option value="cinematic">Cinematic</option>
+        </select>
+      </label>
+      <label>Narration
+        <select id="language">
+          <option value="th">ไทย / Thai</option>
+          <option value="en">English</option>
+        </select>
+      </label>
+      <label>Shots
+        <select id="shots">
+          <option value="4">4</option>
+          <option value="6" selected>6</option>
+          <option value="8">8</option>
+        </select>
+      </label>
+      <label>Seconds per shot
+        <select id="seconds">
+          <option value="4">4</option>
+          <option value="5" selected>5</option>
+          <option value="6">6</option>
+        </select>
+      </label>
+      <label>Image quality
+        <select id="quality">
+          <option value="low">low — cheapest</option>
+          <option value="medium" selected>medium</option>
+          <option value="high">high</option>
+        </select>
+      </label>
+    </div>
+
+    <div class="upload is-hidden" id="upload-box">
+      <label class="file">
+        <input type="file" id="cat-photo" accept="image/png,image/jpeg">
+        <span>Choose a photo of your cat</span>
+      </label>
+      <p class="warn">
+        This photo is <strong>uploaded to OpenAI</strong> as a reference image so
+        the same cat appears in every shot. It is stored locally in
+        <code>artifacts/</code> and is never committed to git. Do not upload a
+        photo you would not send to a third party.
+      </p>
+      <p class="muted" id="upload-state"></p>
+    </div>
+
+    <button class="go" id="generate">Generate the Reel</button>
+    <p class="muted" id="cost-hint"></p>
+  </section>
+
+  <!-- 4. progress -->
+  <section class="panel is-hidden" id="panel-progress">
+    <h2><span class="num">4</span> The agents at work</h2>
+    <div class="terminal" id="terminal"></div>
+  </section>
+
+  <!-- 5. review -->
+  <section class="panel is-hidden" id="panel-review">
+    <h2><span class="num">5</span> Review the shots</h2>
+    <div id="audit"></div>
+    <div id="shots"></div>
+    <button class="go" id="play">▶ Play the Reel</button>
+  </section>
+
+</main>
+
+<!-- full-screen player -->
+<div class="player is-hidden" id="player">
+  <div class="reel" id="reel">
+    <img id="reel-img" alt="">
+    <div class="reel-caption" id="reel-caption"></div>
+    <div class="reel-progress" id="reel-progress"></div>
+  </div>
+  <button class="close" id="close-player" aria-label="Close">✕</button>
+</div>
+
+<script src="/app.js"></script>
+</body>
+</html>

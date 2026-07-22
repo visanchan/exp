@@ -129,41 +129,165 @@ Environment variables required (names only — never values):
 - `OPENAI_API_KEY` — `gpt-image-1` shot image generation and reference editing
 
 ## Implementation summary
-_Not started. Definition committed before any source file exists._
+
+Four modules, standard library only — no packages were installed.
+
+| File | Role |
+|---|---|
+| `src/source_agent.py` | Host allowlist, snapshot loading, product/journal extraction into `SourceRecord` |
+| `src/llm.py` | Text + image calls over `urllib`, provider selection, `CostMeter` |
+| `src/pipeline.py` | The seven-stage agent chain, plus the deterministic `audit_shots` |
+| `src/server.py` | `http.server` with five JSON routes and one SSE progress stream |
+| `web/` | Source picker, progress terminal, shot review, 9:16 player |
+
+**Divergence from the plan — text provider.** The definition assumed Claude for
+the text agents. Only `OPENAI_API_KEY` was present in the environment, so
+`llm.generate_text` selects a provider by which key exists: Anthropic when
+available, OpenAI otherwise. All results below were produced on
+`gpt-4o-mini`, and every run manifest records which provider served it. This
+weakens nothing about C1–C4, but C5 (critic value) is a judgement about a
+specific model and should be re-run on Claude before being generalised.
+
+**The design decision that mattered most.** C3 is enforced by the shape of the
+data, not by the prompt. `SourceRecord.transactional` holds price, stock,
+shipping, weight and dimensions; `story_context()` omits that block entirely
+while `verified_for_marketing` is false. No story agent is ever shown a number
+it could narrate. The safety prompt in `pipeline.SAFETY` is a second layer, not
+the mechanism. This is why the price cannot leak even if a model is talked into
+trying: there is nothing in its context to leak.
+
+## How to run
+
+```bash
+cd experiments/exp-003-meowseum-reel-studio
+python src/server.py          # open http://localhost:8000
+python -m unittest discover -s tests -t .
+```
 
 ## Test cases
 | # | Case | Input / setup | Expected | Actual | Pass |
 |---|---|---|---|---|---|
-| 1 | Product extraction | `/products/09-mona-lisa/` | Structured record, title + Thai title + image | | |
-| 2 | Journal extraction | one `/journal/` article | Structured record with sections + tips | | |
-| 3 | Host guard | a non-Meowseum URL | Refused before fetch | | |
-| 4 | Price safety | prompt asking narration to mention price | No price in output | | |
-| 5 | Full Reel | Mona Lisa demo settings, Cat the Curator | 6 shots, all `source_basis` tagged, plays 9:16 | | |
-| 6 | Cat consistency — brand | test 5 output, shots 1–6 | Drift graded 1–5 by rubric | | |
-| 7 | Cat consistency — uploaded | same settings, uploaded cat photo as reference | Drift graded 1–5, compared against test 6 | | |
-| 8 | Thai voice absent | browser with no Thai `speechSynthesis` voice | Degrades to captions, does not crash or speak Thai in a wrong-language voice silently | | |
+| 1 | Product extraction | `/products/09-mona-lisa/` | Structured record, title + Thai title + image | Title, `โมนาลิซา`, room, No.013, material, care, museum label, 1 image | ✅ |
+| 2 | Journal extraction | `/journal/05-why-cats-ignore-new-furniture/` | Record with sections + tips | 4 sections with headings and points, category, date, tags | ✅ |
+| 3 | Host guard | 3 off-site URLs + a `file://` URL | Refused before any read | All refused; `extract()` raises on host, never reaches snapshot lookup | ✅ |
+| 4 | Price quarantine | serialize entire story context, search it | No price, stock, weight or shipping string present | None of `890`, `฿`, `In stock`, `700 g`, `Free shipping` appear | ✅ |
+| 5 | Full Reel | Mona Lisa / Curator / Thai / funny / 6 shots / medium | 6 images, audit clean, plays 9:16 | 6 PNGs at 1024×1536, audit clean, $0.2558, 3 min | ✅ |
+| 6 | Cat consistency — brand | run `3b5e7e1d9135`, shots 1–6 | Drift graded 1–5 | **2/5** — see Results | ⚠️ |
+| 7 | Cat consistency — uploaded | uploaded cat photo as reference | Drift graded, compared to test 6 | **NOT RUN** — no cat photo available to upload | ❌ |
+| 8 | Thai voice absent | browser with no Thai voice | Falls back to captions | Code path written and reviewed; **not executed** in a voice-less browser | ⚠️ |
+| 9 | Host guard, HTTP layer | `POST /api/reel` with `evil.test` | 400 before any work | `{"error": "refused: 'evil.test' is not 'themeowseum.pages.dev'"}` | ✅ |
 
 How tests were run:
 
 ```bash
-<command>
+python -m unittest discover -s tests -t .     # 18 tests, all pass
+python src/server.py                          # tests 5, 9 via the running app
 ```
 
 ## Results
-_Pending._
+
+Measured against the success criteria.
+
+- **C1 — Extraction: met.** Both page types extract. 18 unit tests pass.
+- **C2 — Grounding: met, but the criterion is weaker than it looked.** Every
+  shot declared either a `source_basis` or a `creative_addition`, and the audit
+  found no shot citing a field that does not exist. **However** — in the first
+  planning run, shot 3 cited `fields.care` and narrated
+  *"การข่วนเพิ่มสุขภาพอย่างมาก"* ("scratching greatly improves health"). The
+  `care` field says only: mount within your cat's reach, brush off loose fibers.
+  The shot cited a **real field name** while asserting a claim that field never
+  makes. The audit passed it. Citing a field name is not the same as being
+  supported by its contents, and only a value-level check catches the
+  difference. This is the most useful finding in the experiment.
+- **C3 — Commercial safety: met, structurally.** The adversarial test
+  serializes the entire story context and asserts no price, stock string,
+  weight or shipping claim survives. It does not, because the block is never
+  passed. A regex sweep over narration, caption and image prompt is a second
+  layer and found nothing in either run.
+- **C4 — Playback: met.** One run produced six 1024×1536 PNGs, a manifest and a
+  playable 9:16 slideshow with Thai narration, from one button, no manual file
+  handling.
+- **C5 — Critic value: met as a recorded null-ish result.** The outline critic
+  produced generic scorecards ("the hook does not engage quickly enough") and
+  vague changes ("revised the introduction to be snappier"). The shot critic was
+  more useful: it shortened an over-long Thai narration line to fit five
+  seconds, and claimed to have made prompts self-contained. Neither critic
+  caught the two real defects — the invented health claim and the character
+  drift. On `gpt-4o-mini` the critics are worth their small cost but are not
+  load-bearing. Re-run on Claude before generalising.
+- **C6 — Cost: met.** One 6-shot Reel at medium quality:
+  **$0.2558** — $0.0038 text (7 calls, 8,519 in / 4,199 out) and $0.252 images.
+  Images are 98.5% of the cost. Planning takes ~52s, images ~2min.
+- **C7 — Consistency comparison: not met, half-run.** The brand-protagonist half
+  ran; the uploaded-cat half did not, for want of a cat photo. See below.
+
+### Hypothesis check
+
+1. **Grounding makes critics cheap and effective — partly wrong.** Grounding
+   made *auditing* cheap and effective; the deterministic audit is where the
+   value showed up, not the critics.
+2. **`source_basis` / `creative_addition` exposes hallucination — wrong as
+   stated.** It exposes *unattributed* hallucination. It does not expose a
+   hallucination wearing a valid citation, which is exactly what happened.
+3. **Visual consistency will be the dominant failure — right, and worse than
+   predicted.** Graded 2/5. Shot 1 shows a brown-and-white long-haired cat with
+   a gold ribbon badge, scratching the corrugated *product*. Shot 4 shows a
+   cream-orange cat with no badge, clawing a *real oil painting*. Both the
+   character and the product identity drifted inside one Reel.
+
+   The cause is visible in the prompts. Shot 1: *"a fluffy cat with distinct
+   markings and a ribbon badge"*. Shot 3: *"a fluffy cat with playful eyes"*.
+   "Distinct markings" is a placeholder **for** specificity rather than
+   specificity itself, so each render invents its own. Shot 4 also drops the
+   word *scratch* from "scratch painting", and the generator reverts to the
+   famous artwork. The instruction in `_protagonist_rule` to "describe the same
+   cat with identical markings" was followed in letter and missed in substance.
+4. **Brand protagonist beats uploaded photo — untested.** Cannot be answered
+   with only one arm of the comparison run.
 
 ## Problems encountered
 | Problem | Symptom | Root cause | Resolution / status |
 |---|---|---|---|
-| | | | |
+| Related-piece images leaked into the record | Mona Lisa's record listed Venus and Starry Night | A bare `<img>` sweep also caught the "more from this room" carousel | Fixed — restricted to `data-gallery-*` images; regression test added |
+| Character drift across shots | Different cat in shots 1 and 4 | Prompts say "distinct markings" instead of naming them | **Open** — needs a literal character sheet, see next improvement |
+| Product identity drift | Shot 4 shows a real oil painting, not the cardboard scratcher | "scratch painting" shortened to "painting" in one prompt | **Open** — same fix |
+| Cited field, invented claim | Health claim attributed to `fields.care` | Audit checks that the field name exists, not that the value supports the sentence | **Open** — needs a value-level entailment check |
+| `unittest discover` refused to run | `Start directory is not importable` | `tests/` had no `__init__.py` | Fixed |
+| Console crash on Thai output | `UnicodeEncodeError: 'charmap'` | Windows console defaults to cp1252 | Worked around with `PYTHONIOENCODING=utf-8`; `server.py` is unaffected |
 
 ## Lessons learned
-_Pending._
+
+- **A citation is not evidence.** Requiring an agent to name its source field
+  produces confident, well-formed, checkable-looking citations that can still
+  sit on top of an invented claim. Name-level auditing catches sloppiness;
+  it does not catch confabulation.
+- **Withholding beats instructing.** The commercial-safety rule held because
+  the data was absent, not because the prompt said no. Where a rule matters,
+  delete the input rather than forbidding the output.
+- **"Be consistent" is not a specification.** An instruction to describe the
+  same cat every time was satisfied by repeating the phrase "distinct markings"
+  — which specifies nothing. Consistency requires a literal shared string, not
+  an instruction to be consistent.
+- **Cost sits almost entirely in images.** 98.5% here. Optimising prompt tokens
+  in a pipeline like this is effort spent on 1.5% of the bill.
 
 ## Reusable outputs
 | Output | Type | Destination |
 |---|---|---|
-| | pattern / prompt / snippet / tool note | `knowledge/.../<file>.md` |
+| Quarantine unverified data structurally instead of forbidding it in the prompt | pattern | `knowledge/reusable-patterns/` — to write |
+| Field-name citation is not entailment | lesson | `knowledge/lessons-learned/` — to write |
+| Character-sheet string for cross-shot image consistency | pattern | `knowledge/reusable-patterns/` — to write |
+| Bilingual `data-bi` span extraction from an Astro site | snippet | `knowledge/code-snippets/` — to write |
+
+## Next improvement (single best)
+
+Replace the "describe the same cat" instruction with a **character sheet**: one
+literal sentence generated once ("a long-haired brown-and-white cat with a white
+chest blaze, amber eyes, and a small gold ribbon badge"), then string-substituted
+verbatim into every image prompt, with the shot critic rejecting any prompt that
+does not contain it word for word. The same treatment for the product noun
+phrase ("the corrugated cardboard Mona Lisa scratch panel"). This targets both
+open drift defects with one mechanism, and makes C7 worth running.
 
 ## Security considerations
 - Secrets used: `ANTHROPIC_API_KEY`, `OPENAI_API_KEY` — names only in `.env.example`
