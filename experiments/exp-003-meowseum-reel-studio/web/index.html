@@ -56,6 +56,16 @@
           <option value="en">English</option>
         </select>
       </label>
+      <label>Voice
+        <select id="voice">
+          <option value="alloy" selected>alloy — neutral</option>
+          <option value="sage">sage — calm</option>
+          <option value="coral">coral — bright</option>
+          <option value="onyx">onyx — deep</option>
+          <option value="nova">nova — warm</option>
+          <option value="">none — browser speech</option>
+        </select>
+      </label>
       <label>Shots
         <select id="shots">
           <option value="4">4</option>
@@ -108,7 +118,11 @@
     <h2><span class="num">5</span> Review the shots</h2>
     <div id="audit"></div>
     <div id="shots"></div>
-    <button class="go" id="play">▶ Play the Reel</button>
+    <div class="actions">
+      <button class="go" id="play">▶ Play the Reel</button>
+      <button class="go secondary" id="export">⬇ Export MP4</button>
+    </div>
+    <p class="muted" id="export-state"></p>
   </section>
 
 </main>

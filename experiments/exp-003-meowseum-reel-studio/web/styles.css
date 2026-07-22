@@ -113,6 +113,10 @@ select, input[type=file] {
 }
 .go:hover { background: var(--ink); }
 .go:disabled { opacity: .5; cursor: not-allowed; }
+.go.secondary { background: transparent; color: var(--ink); border: 1px solid var(--hairline); }
+.go.secondary:hover { background: var(--surface-warm); color: var(--ink); }
+.actions { display: flex; flex-wrap: wrap; gap: .75rem; align-items: center; }
+.actions .go { margin-top: 1.75rem; }
 
 /* terminal */
 .terminal {
@@ -134,6 +138,7 @@ select, input[type=file] {
 .shot .no-img { display: grid; place-items: center; aspect-ratio: 2/3; border: 1px dashed var(--hairline); border-radius: 8px; color: var(--muted); font-size: .75rem; text-align: center; padding: .5rem; }
 .shot h3 { margin: 0 0 .35rem; font-size: .8rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
 .shot .narration { font-size: 1.02rem; margin: 0 0 .6rem; }
+.shot audio { width: 100%; max-width: 320px; height: 32px; margin: 0 0 .6rem; }
 .tag { display: inline-block; font-size: .7rem; padding: .12rem .55rem; border-radius: 99px; margin: 0 .3rem .3rem 0; }
 .tag-src { background: rgba(74,124,82,.12); color: var(--good); }
 .tag-new { background: rgba(200,163,74,.16); color: var(--gold-deep); }

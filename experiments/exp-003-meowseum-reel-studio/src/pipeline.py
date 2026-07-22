@@ -3,7 +3,7 @@
 Chain order, each stage seeing only what it needs:
 
     curate -> characters -> locations -> concepts -> outline -> outline critic
-           -> shots -> shot critic -> images
+           -> shots -> shot critic -> images -> narration
 
 Two things make the chain auditable rather than merely plausible:
 
@@ -52,6 +52,8 @@ class ReelSettings:
     max_characters: int = 3
     max_locations: int = 2
     ending: str = "funny twist"
+    narrate: bool = True  # generate MP3 narration instead of browser speech
+    voice: str = "alloy"
 
     def brief(self) -> str:
         who = (
@@ -127,7 +129,7 @@ Pick the material worth using in a short vertical video. Return JSON:
   "historical_hook": "the real art/architecture reference, or null",
   "avoid": ["material that would be boring or spec-sheet-ish on screen"]
 }}""",
-        max_tokens=1200,
+        max_tokens=8000,
     )
     meter.add_text(result)
     return data
@@ -176,7 +178,7 @@ characters and locations, keeping only what earns its place. Return JSON:
 Include the protagonist as the first character. At most
 {settings.max_characters} characters and {settings.max_locations} locations
 in total.""",
-        max_tokens=1500,
+        max_tokens=9000,
     )
     meter.add_text(result)
     return data
@@ -231,7 +233,7 @@ Return JSON:
     "invented": ["things you made up"]
   }}
 ]""",
-        max_tokens=2000,
+        max_tokens=12000,
     )
     meter.add_text(result)
     return data if isinstance(data, list) else data.get("concepts", [])
@@ -289,7 +291,7 @@ Return JSON:
       "characters": ["..."], "location": "..."}}
   ]
 }}""",
-        max_tokens=2500,
+        max_tokens=12000,
     )
     meter.add_text(result)
     return data
@@ -331,7 +333,7 @@ Return JSON:
   "changes": ["what you changed and why, one line each"],
   "revised": {{ "title": "...", "beats": [ ... same shape as the draft ... ] }}
 }}""",
-        max_tokens=3500,
+        max_tokens=14000,
     )
     meter.add_text(result)
     return data
@@ -405,7 +407,7 @@ Return JSON:
     "transition": "cut"
   }}
 ]""",
-        max_tokens=4000,
+        max_tokens=16000,
     )
     meter.add_text(result)
     return data if isinstance(data, list) else data.get("shots", [])
@@ -446,7 +448,7 @@ Return JSON:
   "changes": ["what you changed and why"],
   "revised": [ ... the full corrected shot list, same shape ... ]
 }}""",
-        max_tokens=5000,
+        max_tokens=20000,
     )
     meter.add_text(result)
     return data
@@ -565,6 +567,72 @@ def render_images(
             progress("image", f"shot {number} FAILED: {entry['image_error']}")
         rendered.append(entry)
     return rendered
+
+
+# ---------------------------------------------------------------------------
+# stage 8 — narration audio
+# ---------------------------------------------------------------------------
+
+
+def _delivery_note(settings: ReelSettings) -> str:
+    """Delivery instructions for the TTS voice.
+
+    The house voice is understated, and the default TTS reading of a punchy
+    Thai line is an advert read. Saying so is cheaper than rewriting the line.
+    """
+    language = "Thai" if settings.language == "th" else "English"
+    tone = {
+        "funny": "Dry and deadpan. Let the joke land on its own; do not sell it.",
+        "warm": "Warm and unhurried, like showing a friend around.",
+        "cinematic": "Low, measured, a little reverent. Museum documentary.",
+    }.get(settings.tone, "Dry, warm and understated. Never oversell.")
+    return (
+        f"Read this as {language} narration for a short vertical video from a "
+        f"small design museum. {tone} Speak at a natural pace that fits about "
+        f"{settings.seconds_per_shot} seconds. Do not read any punctuation aloud."
+    )
+
+
+def render_narration(
+    shot_list: list[dict],
+    out_dir: Path,
+    meter: llm.CostMeter,
+    settings: ReelSettings,
+    *,
+    progress: Progress = _noop,
+) -> list[dict]:
+    """Generate one MP3 per shot. A failed line does not abort the run.
+
+    Each shot gains ``audio_file`` (or ``audio_error``). The player falls back
+    to browser ``speechSynthesis`` when ``audio_file`` is absent, so a failure
+    here degrades the Reel rather than breaking it.
+    """
+    out_dir.mkdir(parents=True, exist_ok=True)
+    note = _delivery_note(settings)
+    narrated = []
+    for shot in shot_list:
+        number = shot.get("shot_number", len(narrated) + 1)
+        line = (shot.get("narration") or "").strip()
+        entry = dict(shot)
+        if not line:
+            entry["audio_file"] = None
+            entry["audio_error"] = None
+            narrated.append(entry)
+            continue
+        progress("narration", f"shot {number}/{len(shot_list)} speaking")
+        try:
+            audio = llm.generate_speech(line, voice=settings.voice, instructions=note)
+            path = out_dir / f"narration-{int(number):02d}.mp3"
+            path.write_bytes(audio)
+            meter.add_speech(len(line))
+            entry["audio_file"] = path.name
+            entry["audio_error"] = None
+        except llm.LLMError as error:
+            entry["audio_file"] = None
+            entry["audio_error"] = str(error)[:300]
+            progress("narration", f"shot {number} FAILED: {entry['audio_error']}")
+        narrated.append(entry)
+    return narrated
 
 
 # ---------------------------------------------------------------------------

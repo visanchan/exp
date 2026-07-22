@@ -13,9 +13,10 @@ Endpoints:
     GET  /api/source?url=...   one extracted record (story view only)
     POST /api/upload           store a cat photo for this session
     POST /api/reel             start a run; returns a run id
+    POST /api/export/<id>      encode that run into reel.mp4
     GET  /api/stream/<id>      SSE progress for a run
     GET  /api/run/<id>         the finished manifest
-    GET  /artifacts/<...>      generated images
+    GET  /artifacts/<...>      generated images and narration MP3s
 """
 
 from __future__ import annotations
@@ -35,6 +36,7 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 sys.path.insert(0, str(HERE))
 
+import export  # noqa: E402
 import llm  # noqa: E402
 import pipeline  # noqa: E402
 import source_agent as sa  # noqa: E402
@@ -107,6 +109,10 @@ def execute(run_id: str, url: str, settings: pipeline.ReelSettings,
             quality=quality,
             progress=progress,
         )
+        if settings.narrate:
+            run.shots_final = pipeline.render_narration(
+                run.shots_final, out_dir, meter, settings, progress=progress
+            )
         run.cost = meter.summary()
 
         manifest = run.manifest()
@@ -119,7 +125,9 @@ def execute(run_id: str, url: str, settings: pipeline.ReelSettings,
         with RUNS_LOCK:
             RUNS[run_id]["manifest"] = manifest
             RUNS[run_id]["status"] = "done"
-        emit(run_id, "done", f"reel ready — ${manifest['cost']['total_usd']}")
+        cost = manifest["cost"]
+        total = f"${cost['total_usd']}" + ("" if cost["total_is_complete"] else "+")
+        emit(run_id, "done", f"reel ready — {total}")
     except Exception as error:  # noqa: BLE001 — surfaced to the UI verbatim
         detail = f"{type(error).__name__}: {error}"
         traceback.print_exc()
@@ -167,6 +175,8 @@ class Handler(BaseHTTPRequestHandler):
             ".js": "text/javascript; charset=utf-8",
             ".css": "text/css; charset=utf-8",
             ".png": "image/png",
+            ".mp3": "audio/mpeg",
+            ".mp4": "video/mp4",
             ".json": "application/json; charset=utf-8",
         }
         self._send(200, path.read_bytes(), types.get(path.suffix, "application/octet-stream"))
@@ -190,12 +200,12 @@ class Handler(BaseHTTPRequestHandler):
             self._json(
                 {
                     "providers": llm.available_providers(),
-                    "text_model": (
-                        llm.ANTHROPIC_MODEL
-                        if llm.available_providers()["anthropic"]
-                        else llm.OPENAI_TEXT_MODEL
-                    ),
+                    "text_model": llm.OPENAI_TEXT_MODEL,
                     "image_model": llm.OPENAI_IMAGE_MODEL,
+                    "image_size": llm.OPENAI_IMAGE_SIZE,
+                    "speech_model": llm.OPENAI_TTS_MODEL,
+                    "voices": list(llm.TTS_VOICES),
+                    "export": export.capability().as_dict(),
                 }
             )
         elif route == "/api/sources":
@@ -302,8 +312,40 @@ class Handler(BaseHTTPRequestHandler):
             self._upload()
         elif route == "/api/reel":
             self._reel()
+        elif route.startswith("/api/export/"):
+            self._export(route.rsplit("/", 1)[-1])
         else:
             self._json({"error": "not found"}, 404)
+
+    def _export(self, run_id: str) -> None:
+        """Encode a finished run to MP4. Synchronous — it takes seconds, not
+        minutes, and unlike generation it costs nothing to retry."""
+        run_dir = (ARTIFACTS / Path(run_id).name).resolve()
+        if ARTIFACTS.resolve() not in run_dir.parents or not run_dir.is_dir():
+            self._json({"error": "unknown run"}, 404)
+            return
+
+        # Read the manifest from disk rather than RUNS, so a run from an
+        # earlier server session can still be exported.
+        manifest_path = run_dir / "manifest.json"
+        if not manifest_path.exists():
+            self._json({"error": "this run has no manifest"}, 400)
+            return
+
+        try:
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            report = export.export_mp4(
+                manifest, run_dir, progress=lambda s, m: emit(run_id, s, m)
+            )
+        except export.ExportError as error:
+            self._json({"error": str(error)}, 400)
+            return
+        except (OSError, json.JSONDecodeError) as error:
+            self._json({"error": f"{type(error).__name__}: {error}"}, 500)
+            return
+
+        report["url"] = f"/artifacts/{run_id}/{report['file']}"
+        self._json(report)
 
     def _upload(self) -> None:
         """Store the reference photo. Kept in artifacts/, which is git-ignored."""
@@ -335,6 +377,13 @@ class Handler(BaseHTTPRequestHandler):
             self._json({"error": str(error)}, 400)
             return
 
+        # An unknown voice would fail on every shot, six calls deep into a paid
+        # run — reject it here instead.
+        voice = payload.get("voice", "alloy")
+        if voice not in llm.TTS_VOICES:
+            self._json({"error": f"unknown voice {voice!r}"}, 400)
+            return
+
         settings = pipeline.ReelSettings(
             mode=payload.get("mode", "artifact-comes-alive"),
             protagonist=payload.get("protagonist", "curator"),
@@ -344,6 +393,8 @@ class Handler(BaseHTTPRequestHandler):
             shots=max(3, min(int(payload.get("shots", 6)), 8)),
             seconds_per_shot=max(3, min(int(payload.get("seconds", 5)), 8)),
             ending=payload.get("ending", "funny twist"),
+            narrate=bool(payload.get("narrate", True)),
+            voice=voice,
         )
 
         reference = None
@@ -372,9 +423,24 @@ class Handler(BaseHTTPRequestHandler):
 def main() -> None:
     ARTIFACTS.mkdir(parents=True, exist_ok=True)
     providers = llm.available_providers()
+    key = "openai" if providers["openai"] else "MISSING OPENAI_API_KEY"
     print("Meowseum Reel Studio")
-    print(f"  text provider : {'anthropic' if providers['anthropic'] else 'openai'}")
-    print(f"  image provider: {'openai' if providers['openai'] else 'MISSING KEY'}")
+    print(f"  text          : {llm.OPENAI_TEXT_MODEL} ({key})")
+    print(f"  images        : {llm.OPENAI_IMAGE_MODEL} at {llm.OPENAI_IMAGE_SIZE} ({key})")
+    print(f"  narration     : {llm.OPENAI_TTS_MODEL} ({key})")
+    if not providers["openai"]:
+        print("                  no key — the player falls back to browser speech")
+    rates = llm._text_rates()
+    if rates["input"] is None or rates["output"] is None:
+        print(
+            "  text pricing  : UNSET — runs report tokens but no text $; set "
+            "OPENAI_TEXT_PRICE_INPUT / _OUTPUT in .env"
+        )
+    caps = export.capability()
+    print(
+        "  mp4 export    : "
+        + (f"{caps.video_encoder} via {caps.binary}" if caps.available else caps.reason)
+    )
     print(f"  open          : http://localhost:{PORT}")
     ThreadingHTTPServer(("127.0.0.1", PORT), Handler).serve_forever()
 
