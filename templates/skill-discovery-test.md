@@ -75,7 +75,7 @@ than a category name.
 
 1. Open a **fresh session** with the agent you want to test, in a clone of this
    repository.
-2. Paste **block 1 only** and wait for the ten answers. Then paste **block 2**.
+2. Paste **block 1 only** and wait for the eleven answers. Then paste **block 2**.
    They are split on purpose: block 2 names a skill file, which would give
    away one of the answers if it were visible during block 1.
 3. Do not paste the answer key that follows them.
@@ -142,7 +142,7 @@ by default in your environment.
 
 <!-- ==== END BLOCK 1 ==== -->
 
-### Block 2 — paste after the ten answers
+### Block 2 — paste after the eleven answers
 
 <!-- ==== BEGIN BLOCK 2 — copy from here ==== -->
 

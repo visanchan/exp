@@ -113,15 +113,25 @@ and replace the questions; do not rebuild the clipboard logic from scratch.
 
 ## Delivering it
 
-1. Write the file somewhere obvious — their Desktop or the project folder — with
-   a name that says what it is: `order-tracker-questions.html`.
-2. **Open it for them.** Do not leave a path in chat for them to find.
-   - Windows: `Start-Process <path>`
-   - macOS: `open <path>`
-   - Linux: `xdg-open <path>`
-3. Tell them in one line: answer what you can, skip what you are unsure about,
+1. Write the workbook inside the target experiment's `artifacts/` folder, with
+   a name that says what it is, for example:
+   `experiments/exp-NNN-short-description/artifacts/order-tracker-questions.html`.
+   If there is no target experiment yet, establish it according to `AGENTS.md`
+   and `ai-class-operating-partner` before creating the workbook. Do not place
+   the file on the Desktop or anywhere else outside this repository.
+2. **Open it immediately after writing it.** The workbook exists so the person
+   can interact with it now; do not wait until the final handoff and do not leave
+   only a path in chat for them to find.
+   - Windows: `Start-Process -FilePath "<absolute in-repo path>"`
+   - macOS: `open "<absolute in-repo path>"`
+   - Linux: `xdg-open "<absolute in-repo path>"`
+3. Confirm that the browser opened the workbook. If the environment blocks GUI
+   launching, say so plainly and provide a clickable in-repository path as the
+   fallback. Do not work around the restriction by copying the file outside the
+   repository.
+4. Tell them in one line: answer what you can, skip what you are unsure about,
    click the button at the bottom, paste it back here.
-4. **Stop and wait.** Do not start building against assumptions while they
+5. **Stop and wait.** Do not start building against assumptions while they
    answer — that is the failure the workbook exists to prevent.
 
 ## Reading the answers back
@@ -148,5 +158,6 @@ remember why a decision went the way it did.
   decision.
 - Do not exceed ~12 questions. Split into a second round if you truly need more.
 - Do not depend on a CDN, a font service, or an internet connection.
+- Do not write the workbook outside the target experiment's `artifacts/` folder.
 - Do not start building while they are still answering.
 - Do not treat a skipped question as a "no".
