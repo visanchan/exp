@@ -23,13 +23,36 @@ anything here.
 
 ## Using them
 
-Most agents discover `.agents/skills/` automatically. If yours does not, point
-it at the file directly — they are plain markdown and readable on their own.
+**These are markdown files, not plug-in tools.** Nothing registers them with
+your assistant, and no keyword fires them automatically. They get used because
+`AGENTS.md` — which agents read at the start of a session — lists them and
+instructs the agent to open the matching one.
 
-To invoke one explicitly:
+That works, but it depends on the agent noticing. If you want to be certain a
+skill is followed, name it. Any of these are reliable:
 
 ```text
-Use $debug-mantra — the login test passes locally and fails in CI.
+Read .agents/skills/debug-mantra/SKILL.md and follow it. The login test
+passes locally and fails in CI.
+```
+
+```text
+Use the debug-mantra skill in this repo — the login test fails in CI.
+```
+
+```text
+Check .agents/skills/README.md and use whichever skill fits: my dev server
+won't stay running.
+```
+
+The first form is the most dependable, because it names a path rather than
+relying on the agent to find one. Use it whenever the result matters.
+
+**Tell a new assistant about `AGENTS.md` at the start of a session.** It is the
+entry point to everything here, and most tools will not read it unprompted:
+
+```text
+Read AGENTS.md first, then help me with <task>.
 ```
 
 ## What is deliberately not here

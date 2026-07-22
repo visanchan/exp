@@ -169,6 +169,11 @@ category while allowing the first to be freely created and destroyed.
 
 ## 13. Portable Class Skills
 
+- **These skills are files, not auto-invoked tools. You must open them.** When a
+  request matches one of the triggers below, read that `SKILL.md` **before**
+  doing the work, and follow it. Do not rely on remembering what it says — the
+  detail is the point. If two seem to apply, read both. If unsure which, read
+  `.agents/skills/README.md` first.
 - Repo-local skills live under `.agents/skills/`, indexed in
   `.agents/skills/README.md`:
   - `ai-class-operating-partner/SKILL.md` — class experiments, prototypes,
