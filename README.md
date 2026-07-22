@@ -47,9 +47,13 @@ Use this repository to:
 ├── .gitignore
 ├── .env.example              # variable NAMES only, never values
 ├── .agents/
-│   └── skills/
-│       ├── ai-class-operating-partner/ # portable class workflow skill
-│       └── local-dev-servers/          # running local dev servers with an agent
+│   └── skills/                         # portable skills — see skills/README.md
+│       ├── ai-class-operating-partner/ # class workflow, the default
+│       ├── local-dev-servers/          # running dev servers with an agent
+│       ├── systematic-debugging/       # finding causes, not guessing fixes
+│       ├── reviewing-ai-written-code/  # checking generated code before keeping it
+│       ├── session-handoff/            # carrying work across sessions
+│       └── write-a-repo-skill/         # adding a skill here safely
 ├── experiments/              # DISPOSABLE — one folder per experiment
 │   └── README.md
 ├── knowledge/                # PERMANENT — extracted, transferable output
@@ -226,17 +230,25 @@ Use it explicitly with a prompt such as:
 Use $ai-class-operating-partner to turn this assignment into a tested experiment.
 ```
 
-A second, situational skill lives at
-[`.agents/skills/local-dev-servers/SKILL.md`](.agents/skills/local-dev-servers/SKILL.md).
-Reach for it when a project needs a backend and a frontend running at the same
-time, when a dev server will not stay up under a coding agent, or when a
-`localhost` URL will not open. It covers telling the three lookalike causes
-apart, launching servers so they survive the session, collapsing two processes
-into one, and verifying an app really is reachable before saying so.
+Five situational skills sit alongside it, indexed in
+[`.agents/skills/README.md`](.agents/skills/README.md):
+
+| Skill | Reach for it when |
+|---|---|
+| [`local-dev-servers`](.agents/skills/local-dev-servers/SKILL.md) | A project needs a backend and a frontend running at once, a dev server will not stay up under an agent, or a `localhost` URL will not open |
+| [`systematic-debugging`](.agents/skills/systematic-debugging/SKILL.md) | Something throws or returns the wrong value — especially after a couple of attempted fixes have already missed |
+| [`reviewing-ai-written-code`](.agents/skills/reviewing-ai-written-code/SKILL.md) | Before keeping or committing code an agent wrote |
+| [`session-handoff`](.agents/skills/session-handoff/SKILL.md) | A session is ending or straining, or work passes to another agent or person |
+| [`write-a-repo-skill`](.agents/skills/write-a-repo-skill/SKILL.md) | A method has proven itself often enough to be worth capturing here |
 
 ```text
-Use $local-dev-servers to get my backend and frontend running and give me a URL that opens.
+Use $systematic-debugging — the login test passes locally and fails in CI.
 ```
+
+These are **synthesized, not copied**. They deliberately exclude private
+context, third-party skill text, and anything tied to one machine — see
+[`.agents/skills/README.md`](.agents/skills/README.md) for what is left out and
+why.
 
 If an AI tool does not automatically discover `.agents/skills/`, point it to the
 skill file directly. Repository rules in `AGENTS.md` remain authoritative.

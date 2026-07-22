@@ -169,13 +169,21 @@ category while allowing the first to be freely created and destroyed.
 
 ## 13. Portable Class Skills
 
-- Repo-local skills live under `.agents/skills/`. There are two:
-  - `ai-class-operating-partner/SKILL.md` — use for class experiments,
-    prototypes, coding, debugging, business or data analysis, spreadsheets,
-    documents, presentations, UI work, and experiment preservation.
-  - `local-dev-servers/SKILL.md` — use when starting or troubleshooting
-    long-running local dev servers, when an app needs a backend and a frontend
-    running at once, or when a localhost URL will not open.
+- Repo-local skills live under `.agents/skills/`, indexed in
+  `.agents/skills/README.md`:
+  - `ai-class-operating-partner/SKILL.md` — class experiments, prototypes,
+    coding, business or data analysis, documents, UI work, and experiment
+    preservation. The default for repository work.
+  - `local-dev-servers/SKILL.md` — starting or troubleshooting long-running dev
+    servers, backend plus frontend, or a localhost URL that will not open.
+  - `systematic-debugging/SKILL.md` — finding the actual cause of a bug rather
+    than guessing at fixes.
+  - `reviewing-ai-written-code/SKILL.md` — reviewing generated code before
+    keeping or committing it.
+  - `session-handoff/SKILL.md` — carrying work across a context limit, a session
+    end, or a change of agent.
+  - `write-a-repo-skill/SKILL.md` — adding or improving a skill here, including
+    the provenance and privacy check.
 - The skills complement this file; this file wins if instructions conflict.
 - Do not assume a clone has the repository owner's user-level, system, plugin,
   or other project skills installed.

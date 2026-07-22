@@ -9,8 +9,14 @@ The portable class workflow skill lives at:
 
 @.agents/skills/ai-class-operating-partner/SKILL.md
 
-A second, situational skill covers running and troubleshooting local dev servers
-(backend + frontend, "the localhost URL won't open"). It is not imported here —
-read it when that comes up:
+Situational skills are not imported here — load one when it applies. The index
+at `.agents/skills/README.md` lists all of them:
 
-`.agents/skills/local-dev-servers/SKILL.md`
+- `.agents/skills/local-dev-servers/SKILL.md` — backend + frontend, "the
+  localhost URL won't open"
+- `.agents/skills/systematic-debugging/SKILL.md` — finding a cause instead of
+  guessing at fixes
+- `.agents/skills/reviewing-ai-written-code/SKILL.md` — checking generated code
+  before keeping it
+- `.agents/skills/session-handoff/SKILL.md` — carrying work across sessions
+- `.agents/skills/write-a-repo-skill/SKILL.md` — adding a skill here safely
