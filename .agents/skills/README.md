@@ -16,6 +16,7 @@ anything here.
 | [`debug-mantra`](debug-mantra/SKILL.md) | Something is broken, throwing or failing — especially after two or three attempted fixes have already missed. Recite the mantra, then work the four steps in order. |
 | [`scrutinize`](scrutinize/SKILL.md) | Reviewing a plan, PR or design — should this exist in this shape, and does the real code path do what it claims? Run before the defect hunt. |
 | [`reviewing-ai-written-code`](reviewing-ai-written-code/SKILL.md) | Before keeping, committing, or approving code an agent wrote. The defect classes generated code specifically produces. |
+| [`artifact-verification`](artifact-verification/SKILL.md) | Before saying an image, audio file, video, HTML page, document or data export is done — open it, play it, use it. Code running is not output being correct. |
 | [`session-handoff`](session-handoff/SKILL.md) | A session is ending or straining, or work is passing to another agent or person. |
 | [`business-analysis`](business-analysis/SKILL.md) | Deciding whether something is worth doing, comparing options, working out unit economics or a break-even, or presenting numbers someone has to act on. |
 | [`market-sizing`](market-sizing/SKILL.md) | Estimating how big an opportunity is — TAM, SAM, SOM — so the number survives being questioned. |

@@ -18,7 +18,9 @@ that shape at all, and traces real code paths to verify it does what it claims.
 This skill assumes the change is wanted and hunts the defect classes that
 *generated* code specifically produces. On anything that matters, run
 `scrutinize` first — if the answer is "this shouldn't exist", the defect hunt is
-moot.
+moot. And if the change produces something a person sees, hears or clicks,
+`artifact-verification` comes last: this skill reads the code, that one opens
+the output.
 
 ## The core rule
 

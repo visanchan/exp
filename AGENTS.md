@@ -187,6 +187,8 @@ category while allowing the first to be freely created and destroyed.
     exist in this shape, and does the traced code path do what it claims?
   - `reviewing-ai-written-code/SKILL.md` — the defect classes generated code
     specifically produces, before keeping or committing it.
+  - `artifact-verification/SKILL.md` — opening, playing or using a produced
+    artifact before calling it done; the valid-but-empty failure class.
   - `session-handoff/SKILL.md` — carrying work across a context limit, a session
     end, or a change of agent.
   - `business-analysis/SKILL.md` — turning a business question into an analysis

@@ -17,7 +17,9 @@ tautological tests, fabricated self-reports. Use that one when checking a patch
 an agent just wrote. Use **this** one to question whether the change should
 exist in that shape at all, and to verify behaviour by tracing real code paths.
 On an agent-written change that matters, both apply — run this one first, since
-"this shouldn't exist" makes the defect hunt moot.
+"this shouldn't exist" makes the defect hunt moot. If the change produces a
+user-visible artifact, finish with `artifact-verification`: tracing a code path
+proves what the code does, not that the file it produced is any good.
 
 ## Operating stance
 

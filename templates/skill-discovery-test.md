@@ -49,7 +49,7 @@ Score it on behaviour, not on its self-report:
   the file. The skill did not fire; the model already knew some of it.
 - **Fail** — it neither opened the file nor followed the method.
 
-Use the same ten requests as Variant A, one per session, in whatever order.
+Use the same eleven requests as Variant A, one per session, in whatever order.
 Three or four is usually enough to see the pattern — if none of the first three
 fire, the problem is systemic and testing seven more will not add information.
 
@@ -99,7 +99,7 @@ Based only on what AGENTS.md told you, answer each scenario below with:
   (b) how confident you are: high / medium / low,
   (c) the words in the scenario that made you choose it.
 
-Write all ten answers out before checking anything.
+Write all eleven answers out before checking anything.
 
  1. "My login test passes on my laptop but fails in GitHub Actions. I've
      already tried three fixes and none worked."
@@ -115,13 +115,15 @@ Write all ten answers out before checking anything.
      sense before I start?"
  9. "I keep having to correct you about the same thing every session."
 10. "I need to start a new experiment for class."
+11. "The script finished and wrote all six files with no errors. Can I tell my
+     professor it's done?"
 
 Now open .agents/skills/README.md and compare your answers to the intended
 mapping. Report a table: scenario | your answer | intended | match?
 
 Be blunt. If you got one wrong, say so plainly — a wrong answer is the useful
 result here, because it means a description is not triggering. If you got all
-ten right, do not just assert that: say which specific wording in AGENTS.md
+eleven right, do not just assert that: say which specific wording in AGENTS.md
 drove each choice, so I can judge whether you actually reasoned or pattern-
 matched from the numbering.
 
@@ -168,7 +170,7 @@ Constraints, from that skill and from AGENTS.md:
     least once?
 
 For each proposal give: name, one-line description, the failure it prevents,
-and why the existing ten do not already cover it. Rank them.
+and why the existing eleven do not already cover it. Rank them.
 
 DO NOT create any new skill yet. Propose only — I will choose.
 
@@ -201,6 +203,7 @@ DO NOT create any new skill yet. Propose only — I will choose.
 | 8 | Review my approach before I start | `scrutinize` |
 | 9 | Keeps needing the same correction each session | `write-a-repo-skill` |
 | 10 | Starting a new class experiment | `ai-class-operating-partner` |
+| 11 | Script ran clean, files written — is it done? | `artifact-verification` |
 
 **Scenarios 2 and 8 are the load-bearing pair.** Both are "review this". One is
 a defect hunt on generated code; the other asks whether an approach should exist

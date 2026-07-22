@@ -164,9 +164,40 @@ One addition to the original: a closing section on scrutinising your own plan
 before building, since step 1 is far cheaper applied before the code exists than
 after.
 
+**Fifth addendum, same day — `artifact-verification`.** Proposed by an external
+agent during the first skill-discovery test run, and built after review. It is
+the only proposal accepted; a second, on probing an unfamiliar API before
+building against it, was declined as thinner — its content already exists as
+`knowledge/tool-notes/openai-model-api-surface.md`, and `debug-mantra` covers
+the reactive half.
+
+The failure it addresses is documented repeatedly in this repository's own
+history rather than assumed. In exp-003, narration was generated as MP3s that
+nobody played for a day, and the lines turned out to run 40% over their time
+budget — a defect that existed only in the output. Character drift across
+generated images went unnoticed until someone opened the PNGs. During the
+workbook work, this repository's own decision record claimed the template was
+"complete and runnable" on the strength of structural inspection, and had to be
+corrected after it was actually loaded in a browser.
+
+The skill's rule is that an output nobody has perceived is an output nobody has
+checked, and its core content is the valid-but-empty failure class: structural
+validity and correct content are independent properties, so a silent MP3, a
+black MP4, a blank PDF and a header-only CSV all pass an "it exists and parses"
+check.
+
+It is the third review-adjacent skill, so the boundary was stated in all three:
+`scrutinize` asks whether the change should exist and traces the code path;
+`reviewing-ai-written-code` hunts the defects generated code contains; this one
+opens the resulting file. Ordered last, and explicitly not skippable because the
+other two passed — they read code, it opens output.
+
+A scenario was added to `templates/skill-discovery-test.md`, keeping one
+scenario per skill so the set stays covered.
+
 ## Consequences
 
-- A classmate cloning the repository gets ten usable skills and no private
+- A classmate cloning the repository gets eleven usable skills and no private
   material.
 - Coverage is narrower than the owner's environment, deliberately.
 - The excluded skills stay available to the owner locally; nothing was removed

@@ -20,6 +20,8 @@ at `.agents/skills/README.md` lists all of them:
   real code path do what it claims?
 - `.agents/skills/reviewing-ai-written-code/SKILL.md` — checking generated code
   before keeping it
+- `.agents/skills/artifact-verification/SKILL.md` — open/play/use the output
+  before calling it done
 - `.agents/skills/session-handoff/SKILL.md` — carrying work across sessions
 - `.agents/skills/business-analysis/SKILL.md` — business case, unit economics,
   break-even, sensitivity
