@@ -95,6 +95,17 @@ Required:
 6. **Unanswered questions listed explicitly** in the copied output, so you can
    tell "no" from "didn't get to it" — the difference matters and is invisible
    otherwise.
+7. **A progress indicator** — "3 of 5 answered", with answered questions marked.
+   It is the main thing that gets a form finished, and it makes skipping a
+   visible choice rather than an accident.
+8. **A theme picker.** Do not pick a colour on someone's behalf, and especially
+   not from an assumption about who they are. Offer a few and let them choose;
+   the template remembers it.
+
+Keep all of these when you edit the template. The copy routine and the progress
+counter both read the DOM, so adding or removing questions needs no other
+change — but stripping the progress bar or the theme picker removes the parts
+that make it comfortable to finish.
 
 A complete, working template is in
 [`references/workbook-template.html`](references/workbook-template.html). Copy it

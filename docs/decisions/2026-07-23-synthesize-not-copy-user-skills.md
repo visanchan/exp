@@ -114,10 +114,31 @@ Verified in a browser on 2026-07-23, not only by structural inspection. A
 harness filled the form the way a person would — one radio choice, a
 multi-select with some options left unticked, an "Other" option with free text,
 one question skipped entirely, and a section comment — then called the shipped
-`collect()` function and asserted on its output. Ten assertions passed. The two
-that matter most cover the skipped question: it must appear as "not answered"
-*and* be listed separately, because a skip silently reading as a "no" would send
-an agent off to build the wrong thing with no signal that anything went wrong.
+`collect()` function and asserted on its output. The two assertions that matter
+most cover the skipped question: it must appear as "not answered" *and* be
+listed separately, because a skip silently reading as a "no" would send an agent
+off to build the wrong thing with no signal that anything went wrong. The owner
+also completed a real round trip, pasting the copied text back.
+
+**Visual design, same day.** The first version was legible but plain, and a
+questionnaire that is unpleasant to fill in does not get finished — completion
+is the whole point of the artifact. Added a progress indicator ("4 of 5
+answered", with answered questions marked), whole-card click targets rather than
+bare radio dots, a visible selected state, a sticky single-action bar, and a
+mobile layout.
+
+The request was to theme it pink for a specific person, on the assumption that
+she would like pink. Implemented as a **five-option theme picker** (pink, blue,
+mint, lilac, warm neutral) that remembers the choice, rather than a hard-coded
+palette. Two reasons: the preference was explicitly a guess about someone not
+present, and this template ships to everyone who clones the repository, so one
+person's assumed taste would have become the default for all of them.
+
+Every theme was checked against WCAG AA. The first pink accent failed at 4.29:1
+for white button text — below the 4.5 minimum — and was darkened until it passed.
+All five now clear 4.5:1 on body text, muted text and button labels; the tightest
+is 4.54:1. Pastel palettes fail this quietly and often, so the check is worth
+repeating on any future theme.
 
 ## Consequences
 

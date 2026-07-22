@@ -12,116 +12,205 @@
     - every input in one question shares the same  name="..."  (unique per page)
     - an "Other" free-text input has  class="other"
     - a section comment box has  class="comment"  and sits inside its <section>
-  Nothing else is required. The copy button reads the DOM, so you never have to
-  maintain a parallel list of questions.
+  Nothing else is required. The copy button and the progress counter both read
+  the DOM, so you never maintain a parallel list of questions.
+
+  Themes: the person answering picks one from the swatches in the header. Their
+  choice is remembered. Do not hard-code a theme for someone else's taste.
 -->
-<html lang="en">
+<html lang="en" data-theme="blossom">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>A few questions before we build this</title>
 <style>
-  :root {
-    --ink: #1a1a1a; --muted: #666; --line: #e0ddd8;
-    --bg: #faf9f7; --card: #fff; --accent: #7a5c3e; --ok: #2d6a4f;
+  /* ---- themes -------------------------------------------------------
+     Every palette keeps body text at >= 4.5:1 against its surface, so the
+     pastels stay readable. Ink is near-black in all of them for that reason. */
+  [data-theme="blossom"] {
+    --bg:#fdf4f7; --card:#fff; --ink:#2b1f26; --muted:#7d6b74;
+    --line:#f2dde5; --accent:#bd4f79; --accent-soft:#fce7ee; --ring:#e58fb0;
   }
-  * { box-sizing: border-box; }
+  [data-theme="sky"] {
+    --bg:#f1f7fd; --card:#fff; --ink:#1d2733; --muted:#67788a;
+    --line:#dce9f5; --accent:#3a6ea5; --accent-soft:#e3eefa; --ring:#8ab4dd;
+  }
+  [data-theme="mint"] {
+    --bg:#f1faf5; --card:#fff; --ink:#1e2b25; --muted:#647a70;
+    --line:#d8ede2; --accent:#2f7d5c; --accent-soft:#e0f4ea; --ring:#7fc4a4;
+  }
+  [data-theme="lilac"] {
+    --bg:#f7f4fd; --card:#fff; --ink:#261f33; --muted:#736a85;
+    --line:#e6dff5; --accent:#6d54a8; --accent-soft:#ece4fa; --ring:#a992dc;
+  }
+  [data-theme="sand"] {
+    --bg:#faf9f7; --card:#fff; --ink:#1a1a1a; --muted:#6b665f;
+    --line:#e8e3da; --accent:#8a6440; --accent-soft:#f4ece2; --ring:#c9a882;
+  }
+  :root { --ok:#2d6a4f; --radius:14px; }
+
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
   body {
-    margin: 0; padding: 2rem 1rem 6rem; background: var(--bg); color: var(--ink);
-    font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    margin:0; padding:1.5rem 1rem 7.5rem; background:var(--bg); color:var(--ink);
+    font:16px/1.65 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    transition:background 180ms ease, color 180ms ease;
   }
-  main { max-width: 46rem; margin: 0 auto; }
-  h1 { font-size: 1.6rem; margin: 0 0 .5rem; }
-  .intro {
-    background: var(--card); border: 1px solid var(--line); border-radius: 10px;
-    padding: 1.25rem 1.5rem; margin-bottom: 2rem;
+  main { max-width:44rem; margin:0 auto; }
+
+  /* ---- header ---- */
+  header {
+    background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+    padding:1.5rem 1.6rem; margin-bottom:1.25rem;
   }
-  .intro p { margin: .5rem 0; }
-  .time { color: var(--muted); font-size: .9rem; }
+  .themes { display:flex; gap:.45rem; align-items:center; margin-bottom:1.1rem; }
+  .themes span { font-size:.8rem; color:var(--muted); margin-right:.15rem; }
+  .sw {
+    width:26px; height:26px; border-radius:50%; border:2px solid transparent;
+    cursor:pointer; padding:0; transition:transform 150ms ease, border-color 150ms ease;
+  }
+  .sw:hover { transform:scale(1.15); }
+  .sw[aria-pressed="true"] { border-color:var(--ink); transform:scale(1.15); }
+  .sw:focus-visible { outline:3px solid var(--ring); outline-offset:2px; }
+  h1 { font-size:1.5rem; line-height:1.3; margin:0 0 .6rem; }
+  header p { margin:.45rem 0; }
+  .time { color:var(--muted); font-size:.9rem; }
+
+  /* ---- progress ---- */
+  .progress-wrap { margin-top:1.2rem; }
+  .progress-track {
+    height:8px; background:var(--accent-soft); border-radius:99px; overflow:hidden;
+  }
+  .progress-fill {
+    height:100%; width:0%; background:var(--accent); border-radius:99px;
+    transition:width 200ms ease;
+  }
+  .progress-text { font-size:.85rem; color:var(--muted); margin-top:.4rem; }
+
+  /* ---- sections ---- */
   section {
-    background: var(--card); border: 1px solid var(--line); border-radius: 10px;
-    padding: 1.25rem 1.5rem; margin-bottom: 1.25rem;
+    background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+    padding:1.4rem 1.6rem; margin-bottom:1.1rem;
   }
   section > h2 {
-    font-size: 1.05rem; margin: 0 0 1rem; padding-bottom: .5rem;
-    border-bottom: 1px solid var(--line);
+    font-size:1.05rem; margin:0 0 1.2rem; padding-bottom:.6rem;
+    border-bottom:1px solid var(--line);
   }
-  .q { margin-bottom: 1.75rem; }
-  .q:last-of-type { margin-bottom: 1rem; }
-  .q > p.ask { font-weight: 600; margin: 0 0 .25rem; }
-  .q > p.why { color: var(--muted); font-size: .9rem; margin: 0 0 .75rem; }
+  .q { margin-bottom:1.9rem; }
+  .q:last-of-type { margin-bottom:1.1rem; }
+  .ask { font-weight:600; margin:0 0 .2rem; display:flex; gap:.5rem; align-items:baseline; }
+  .dot {
+    width:8px; height:8px; border-radius:50%; background:var(--line);
+    flex:none; transform:translateY(-2px); transition:background 180ms ease;
+  }
+  .q.answered .dot { background:var(--ok); }
+  .why { color:var(--muted); font-size:.9rem; margin:0 0 .85rem 1rem; }
+
+  /* ---- options: whole card is the target, not just the dot ---- */
   label.opt {
-    display: block; padding: .6rem .75rem; margin-bottom: .4rem; cursor: pointer;
-    border: 1px solid var(--line); border-radius: 7px; background: #fff;
+    display:block; padding:.75rem .9rem; margin-bottom:.5rem; cursor:pointer;
+    border:1.5px solid var(--line); border-radius:10px; background:var(--card);
+    transition:border-color 150ms ease, background 150ms ease;
   }
-  label.opt:hover { border-color: var(--accent); }
-  label.opt input { margin-right: .6rem; }
-  .consequence { color: var(--muted); font-size: .9rem; }
+  label.opt:hover { border-color:var(--ring); background:var(--accent-soft); }
+  label.opt:has(input:checked) { border-color:var(--accent); background:var(--accent-soft); }
+  label.opt:focus-within { outline:3px solid var(--ring); outline-offset:2px; }
+  label.opt input { margin-right:.55rem; accent-color:var(--accent); }
+  .consequence { color:var(--muted); font-size:.88rem; display:block; margin:.2rem 0 0 1.5rem; }
   .rec {
-    color: var(--ok); font-size: .8rem; font-weight: 600;
-    text-transform: uppercase; letter-spacing: .04em; margin-left: .4rem;
+    color:var(--ok); font-size:.72rem; font-weight:700; letter-spacing:.05em;
+    text-transform:uppercase; margin-left:.4rem; white-space:nowrap;
   }
+
   input[type=text], textarea {
-    width: 100%; font: inherit; padding: .55rem .7rem; margin-top: .35rem;
-    border: 1px solid var(--line); border-radius: 7px; background: #fff;
+    width:100%; font:inherit; color:inherit; padding:.6rem .75rem; margin-top:.4rem;
+    border:1.5px solid var(--line); border-radius:9px; background:var(--card);
   }
-  textarea { min-height: 4.5rem; resize: vertical; }
-  .comment-label { display: block; font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+  input[type=text]:focus, textarea:focus {
+    outline:3px solid var(--ring); outline-offset:1px; border-color:var(--accent);
+  }
+  textarea { min-height:4.5rem; resize:vertical; }
+  .comment-label { display:block; font-size:.9rem; color:var(--muted); margin-top:.6rem; }
+
+  /* ---- sticky action bar: one primary action, always reachable ---- */
   .bar {
-    position: fixed; left: 0; right: 0; bottom: 0; background: var(--card);
-    border-top: 1px solid var(--line); padding: .85rem 1rem; text-align: center;
+    position:fixed; left:0; right:0; bottom:0; z-index:5;
+    background:var(--card); border-top:1px solid var(--line);
+    padding:.8rem 1rem calc(.8rem + env(safe-area-inset-bottom)); text-align:center;
   }
-  button {
-    font: inherit; font-weight: 600; padding: .7rem 1.6rem; cursor: pointer;
-    background: var(--accent); color: #fff; border: 0; border-radius: 99px;
+  .bar-inner { max-width:44rem; margin:0 auto; }
+  button.primary {
+    font:inherit; font-weight:600; font-size:1rem; padding:.85rem 2rem; width:100%;
+    max-width:22rem; cursor:pointer; background:var(--accent); color:#fff;
+    border:0; border-radius:99px; transition:filter 150ms ease, transform 100ms ease;
   }
-  button:hover { background: #5f4730; }
-  #status { display: block; margin-top: .5rem; font-size: .9rem; color: var(--ok); min-height: 1.2em; }
-  #fallback { display: none; max-width: 46rem; margin: 1rem auto 0; }
-  @media (prefers-color-scheme: dark) {
-    :root { --ink: #ececec; --muted: #a0a0a0; --line: #3a3a3a; --bg: #1b1b1b; --card: #242424; --accent: #b98d5f; --ok: #6fbf9a; }
-    label.opt, input[type=text], textarea { background: #2c2c2c; color: inherit; }
+  button.primary:hover { filter:brightness(1.08); }
+  button.primary:active { transform:scale(.985); }
+  button.primary:focus-visible { outline:3px solid var(--ring); outline-offset:3px; }
+  #status { display:block; margin-top:.5rem; font-size:.88rem; color:var(--ok); min-height:1.3em; }
+  #status.warn { color:var(--muted); }
+
+  #fallback { display:none; max-width:44rem; margin:1.25rem auto 0; }
+
+  @media (max-width:34rem) {
+    body { padding:1rem .75rem 8rem; }
+    header, section { padding:1.1rem 1rem; border-radius:12px; }
+    h1 { font-size:1.3rem; }
   }
+  @media (prefers-reduced-motion:reduce) { * { transition:none !important; } }
 </style>
 </head>
 <body>
 <main>
 
   <!-- ==== REPLACE: intro ==== -->
-  <h1>A few questions before we build this</h1>
-  <div class="intro">
+  <header>
+    <div class="themes" role="group" aria-label="Choose a colour theme">
+      <span>Theme</span>
+      <button class="sw" data-set="blossom" style="background:#f3b6cd" title="Blossom" aria-label="Blossom" aria-pressed="true"></button>
+      <button class="sw" data-set="sky"     style="background:#a9cdec" title="Sky"     aria-label="Sky"     aria-pressed="false"></button>
+      <button class="sw" data-set="mint"    style="background:#a8ddc3" title="Mint"    aria-label="Mint"    aria-pressed="false"></button>
+      <button class="sw" data-set="lilac"   style="background:#c3b0e8" title="Lilac"   aria-label="Lilac"   aria-pressed="false"></button>
+      <button class="sw" data-set="sand"    style="background:#ddc9ad" title="Sand"    aria-label="Sand"    aria-pressed="false"></button>
+    </div>
+
+    <h1>A few questions before we build this</h1>
     <p><strong>What we're making:</strong> a simple tool to keep track of your
       orders, so you can stop doing it on paper.</p>
-    <p>These questions decide how it gets built. There are no wrong answers, and
-      you can skip anything you're unsure about — just say so in the comment box
-      and we'll pick something sensible.</p>
+    <p>There are no wrong answers. Skip anything you're unsure about — say so in
+      the comment box and we'll pick something sensible.</p>
     <p class="time">About 5 minutes. When you're done, press the button at the
       bottom and paste the result back into the chat.</p>
-  </div>
+
+    <div class="progress-wrap">
+      <div class="progress-track"><div class="progress-fill" id="bar"></div></div>
+      <div class="progress-text" id="progressText">0 of 0 answered</div>
+    </div>
+  </header>
 
   <!-- ==== REPLACE: sections and questions ==== -->
   <section>
     <h2>Who uses it</h2>
 
     <div class="q" data-q="Who will be using this?">
-      <p class="ask">Who will be using this?</p>
+      <p class="ask"><span class="dot"></span>Who will be using this?</p>
       <p class="why">This decides whether we need logins.</p>
       <label class="opt"><input type="radio" name="users" value="Only me">
         Only me<span class="rec">Recommended</span>
-        <span class="consequence"><br>Simplest — no logins, nothing to manage.</span></label>
+        <span class="consequence">Simplest — no logins, nothing to manage.</span></label>
       <label class="opt"><input type="radio" name="users" value="Me and a few people I trust">
         Me and a few people I trust
-        <span class="consequence"><br>Everyone shares one link. No individual accounts.</span></label>
+        <span class="consequence">Everyone shares one link. No individual accounts.</span></label>
       <label class="opt"><input type="radio" name="users" value="Several people who should each see different things">
         Several people who should each see different things
-        <span class="consequence"><br>Needs logins and permissions — noticeably more work.</span></label>
+        <span class="consequence">Needs logins and permissions — noticeably more work.</span></label>
       <label class="opt"><input type="radio" name="users" value="__other__">
         Something else:
         <input type="text" class="other" placeholder="Tell us in your own words"></label>
     </div>
 
     <div class="q" data-q="Will you use this on your phone?">
-      <p class="ask">Will you use this on your phone?</p>
+      <p class="ask"><span class="dot"></span>Will you use this on your phone?</p>
       <p class="why">Phone layouts take extra work, so it helps to know early.</p>
       <label class="opt"><input type="radio" name="device" value="Mostly on a computer">
         Mostly on a computer<span class="rec">Recommended</span></label>
@@ -129,7 +218,7 @@
         Mostly on my phone</label>
       <label class="opt"><input type="radio" name="device" value="Both, equally">
         Both, equally
-        <span class="consequence"><br>Works everywhere, takes a bit longer.</span></label>
+        <span class="consequence">Works everywhere, takes a bit longer.</span></label>
     </div>
 
     <label class="comment-label">Anything else about who uses it?
@@ -140,18 +229,18 @@
     <h2>The information</h2>
 
     <div class="q" data-q="If you close this and come back tomorrow, should your information still be there?">
-      <p class="ask">If you close this and come back tomorrow, should your
-        information still be there?</p>
+      <p class="ask"><span class="dot"></span>If you close this and come back
+        tomorrow, should your information still be there?</p>
       <p class="why">This is the single biggest decision on the list.</p>
       <label class="opt"><input type="radio" name="persist" value="Yes, always keep it">
         Yes, always keep it<span class="rec">Recommended</span></label>
       <label class="opt"><input type="radio" name="persist" value="No, starting fresh each time is fine">
         No, starting fresh each time is fine
-        <span class="consequence"><br>Much simpler and quicker to build.</span></label>
+        <span class="consequence">Much simpler and quicker to build.</span></label>
     </div>
 
     <div class="q" data-q="Which of these do you need to record? (tick all that apply)">
-      <p class="ask">Which of these do you need to record?</p>
+      <p class="ask"><span class="dot"></span>Which of these do you need to record?</p>
       <p class="why">Tick everything you'd actually use. We can add more later.</p>
       <label class="opt"><input type="checkbox" name="fields" value="Customer name"> Customer name</label>
       <label class="opt"><input type="checkbox" name="fields" value="What they ordered"> What they ordered</label>
@@ -169,8 +258,8 @@
     <h2>What matters most</h2>
 
     <div class="q" data-q="If only one thing worked by the end of the week, which would it be?">
-      <p class="ask">If only one thing worked by the end of the week, which would
-        it be?</p>
+      <p class="ask"><span class="dot"></span>If only one thing worked by the end
+        of the week, which would it be?</p>
       <p class="why">This tells us what to build first.</p>
       <label class="opt"><input type="radio" name="priority" value="Adding a new order quickly">
         Adding a new order quickly</label>
@@ -191,8 +280,10 @@
 </main>
 
 <div class="bar">
-  <button id="copy" type="button">Copy my answers</button>
-  <span id="status" role="status" aria-live="polite"></span>
+  <div class="bar-inner">
+    <button class="primary" id="copy" type="button">Copy my answers</button>
+    <span id="status" role="status" aria-live="polite"></span>
+  </div>
 </div>
 
 <main id="fallback">
@@ -204,6 +295,44 @@
 (function () {
   "use strict";
 
+  /* ---- theme: the person answering chooses; remember it ---- */
+  var THEME_KEY = "workbook-theme";
+  function setTheme(name) {
+    document.documentElement.dataset.theme = name;
+    document.querySelectorAll(".sw").forEach(function (b) {
+      b.setAttribute("aria-pressed", String(b.dataset.set === name));
+    });
+    try { localStorage.setItem(THEME_KEY, name); } catch (e) { /* file:// may block */ }
+  }
+  document.querySelectorAll(".sw").forEach(function (b) {
+    b.addEventListener("click", function () { setTheme(b.dataset.set); });
+  });
+  try {
+    var saved = localStorage.getItem(THEME_KEY);
+    if (saved) setTheme(saved);
+  } catch (e) { /* ignore */ }
+
+  /* ---- progress: answered questions, so nothing is silently missed ---- */
+  function answeredIn(q) {
+    return !!q.querySelector("input[type=radio]:checked, input[type=checkbox]:checked");
+  }
+  function refresh() {
+    var qs = document.querySelectorAll(".q"), done = 0;
+    qs.forEach(function (q) {
+      var ok = answeredIn(q);
+      q.classList.toggle("answered", ok);
+      if (ok) done++;
+    });
+    var pct = qs.length ? Math.round((done / qs.length) * 100) : 0;
+    document.getElementById("bar").style.width = pct + "%";
+    document.getElementById("progressText").textContent =
+      done + " of " + qs.length + " answered" +
+      (done === qs.length && qs.length ? " — all done" : "");
+  }
+  document.addEventListener("change", refresh);
+  refresh();
+
+  /* ---- collect ---- */
   function collect() {
     var out = [];
     var unanswered = [];
@@ -261,8 +390,10 @@
     return out.join("\n");
   }
 
-  function say(message) {
-    document.getElementById("status").textContent = message;
+  function say(message, warn) {
+    var el = document.getElementById("status");
+    el.textContent = message;
+    el.className = warn ? "warn" : "";
   }
 
   document.getElementById("copy").addEventListener("click", function () {
@@ -273,16 +404,21 @@
       var box = document.getElementById("fallbackText");
       box.value = text;
       pane.style.display = "block";
+      pane.scrollIntoView({ block: "start" });
       box.focus();
       box.select();
-      say("Copy the text below instead.");
+      say("Copy the text below instead.", true);
     }
 
     // navigator.clipboard is unavailable on file:// in some browsers, so the
     // manual pane is a real path, not a nicety.
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(text).then(function () {
-        say("Copied. Now paste it back into the chat.");
+        var qs = document.querySelectorAll(".q").length;
+        var done = document.querySelectorAll(".q.answered").length;
+        say(done === qs
+          ? "Copied. Now paste it back into the chat."
+          : "Copied (" + done + " of " + qs + " answered). Paste it back into the chat.");
       }, manual);
     } else {
       manual();
