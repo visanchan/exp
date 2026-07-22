@@ -22,4 +22,6 @@ at `.agents/skills/README.md` lists all of them:
 - `.agents/skills/business-analysis/SKILL.md` — business case, unit economics,
   break-even, sensitivity
 - `.agents/skills/market-sizing/SKILL.md` — TAM / SAM / SOM, triangulated
+- `.agents/skills/requirements-workbook/SKILL.md` — plain-language HTML
+  questionnaire to gather requirements before building
 - `.agents/skills/write-a-repo-skill/SKILL.md` — adding a skill here safely

@@ -93,9 +93,26 @@ fix with a regression test, the stuck checklist, and the agent-specific traps.
 
 Net: one skill stronger than either, and one fewer near-duplicate.
 
+**Third addendum, same day — `requirements-workbook`.** Added on request, to
+address a failure the other skills do not: an agent guessing at requirements
+that only exist in a non-technical person's head, then building the wrong thing
+competently.
+
+The skill has an agent generate a self-contained HTML questionnaire, open it,
+and wait. Questions are multiple-choice, written in business rather than
+engineering language, and every option states its consequence so someone who
+cannot price the alternatives can still choose between them. A single button
+copies the answers back as structured text, listing skipped questions explicitly
+so "didn't get to it" is distinguishable from "no".
+
+A complete working template lives in the skill's `references/`. It is the first
+skill here to ship a runnable artifact rather than guidance alone, which is
+deliberate: rebuilding clipboard handling per use would produce a different bug
+each time.
+
 ## Consequences
 
-- A classmate cloning the repository gets eight usable skills and no private
+- A classmate cloning the repository gets nine usable skills and no private
   material.
 - Coverage is narrower than the owner's environment, deliberately.
 - The excluded skills stay available to the owner locally; nothing was removed

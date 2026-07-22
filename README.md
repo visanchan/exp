@@ -55,6 +55,7 @@ Use this repository to:
 │       ├── session-handoff/            # carrying work across sessions
 │       ├── business-analysis/          # business case, unit economics, break-even
 │       ├── market-sizing/              # TAM / SAM / SOM, triangulated
+│       ├── requirements-workbook/      # ask in plain language before building
 │       └── write-a-repo-skill/         # adding a skill here safely
 ├── experiments/              # DISPOSABLE — one folder per experiment
 │   └── README.md
@@ -232,7 +233,7 @@ Use it explicitly with a prompt such as:
 Use $ai-class-operating-partner to turn this assignment into a tested experiment.
 ```
 
-Seven situational skills sit alongside it, indexed in
+Eight situational skills sit alongside it, indexed in
 [`.agents/skills/README.md`](.agents/skills/README.md):
 
 | Skill | Reach for it when |
@@ -243,6 +244,7 @@ Seven situational skills sit alongside it, indexed in
 | [`session-handoff`](.agents/skills/session-handoff/SKILL.md) | A session is ending or straining, or work passes to another agent or person |
 | [`business-analysis`](.agents/skills/business-analysis/SKILL.md) | Deciding whether something is worth doing, comparing options, or presenting numbers someone must act on |
 | [`market-sizing`](.agents/skills/market-sizing/SKILL.md) | Estimating an opportunity — TAM, SAM, SOM — so the number survives being questioned |
+| [`requirements-workbook`](.agents/skills/requirements-workbook/SKILL.md) | Requirements live in someone's head and the request is a one-liner — ask first, in plain language, via an HTML questionnaire |
 | [`write-a-repo-skill`](.agents/skills/write-a-repo-skill/SKILL.md) | A method has proven itself often enough to be worth capturing here |
 
 ```text

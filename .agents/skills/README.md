@@ -18,6 +18,7 @@ anything here.
 | [`session-handoff`](session-handoff/SKILL.md) | A session is ending or straining, or work is passing to another agent or person. |
 | [`business-analysis`](business-analysis/SKILL.md) | Deciding whether something is worth doing, comparing options, working out unit economics or a break-even, or presenting numbers someone has to act on. |
 | [`market-sizing`](market-sizing/SKILL.md) | Estimating how big an opportunity is — TAM, SAM, SOM — so the number survives being questioned. |
+| [`requirements-workbook`](requirements-workbook/SKILL.md) | Before building something whose requirements live in someone's head — generates a plain-language HTML questionnaire, opens it, and takes the pasted answers back as the spec. |
 | [`write-a-repo-skill`](write-a-repo-skill/SKILL.md) | A working method has proven itself often enough to be worth capturing here. |
 
 ## Using them

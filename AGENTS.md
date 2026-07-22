@@ -186,6 +186,8 @@ category while allowing the first to be freely created and destroyed.
     that changes a decision; unit economics, break-even, sensitivity.
   - `market-sizing/SKILL.md` — TAM, SAM and SOM estimated three ways and
     triangulated.
+  - `requirements-workbook/SKILL.md` — asking what to build, in plain language,
+    via a self-contained HTML questionnaire, before building it.
   - `write-a-repo-skill/SKILL.md` — adding or improving a skill here, including
     the provenance and privacy check.
 - The skills complement this file; this file wins if instructions conflict.
