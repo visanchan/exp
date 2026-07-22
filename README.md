@@ -69,7 +69,8 @@ Use this repository to:
 ├── templates/                # PERMANENT — start-here documents
 │   ├── experiment-readme-template.md
 │   ├── lessons-learned-template.md
-│   └── cleanup-checklist.md
+│   ├── cleanup-checklist.md
+│   └── skill-discovery-test.md   # check an agent picks the right skill
 ├── archive/                  # PERMANENT — historical record
 │   └── experiment-index.md
 └── docs/                     # PERMANENT — class + repo documentation

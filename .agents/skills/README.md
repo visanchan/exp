@@ -80,3 +80,8 @@ The reasoning is recorded in
 Read [`write-a-repo-skill`](write-a-repo-skill/SKILL.md). It covers the layout,
 the frontmatter, the privacy and provenance check, and where to register the new
 skill so it is discoverable.
+
+Then run [`../../templates/skill-discovery-test.md`](../../templates/skill-discovery-test.md)
+in a fresh session. It checks whether an agent that has read only `AGENTS.md`
+reaches for the right skill, and exposes descriptions that are not triggering.
+Add a scenario for every skill you add, or the test stops covering the set.

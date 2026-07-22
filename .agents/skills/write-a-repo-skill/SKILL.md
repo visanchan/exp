@@ -137,11 +137,16 @@ A skill nobody can find does nothing. After creating one:
 
 Do not assume it works because it reads well.
 
-- Start a fresh session and give it a realistic prompt that *should* trigger the
-  skill. Did it load? If not, the description is the problem.
+- **Run `templates/skill-discovery-test.md`** in a fresh session. It gives an
+  agent realistic requests that never name a skill, and checks whether it
+  reaches for the right one from `AGENTS.md` alone. Add a scenario for your new
+  skill and a row to its answer key, or the test stops covering the set.
 - Follow the skill yourself on a real task. Anything ambiguous in practice is
   ambiguous in the text.
 - Check the frontmatter parses and `name` matches the folder.
+
+A wrong answer in that test is the useful result: it names a description that is
+not triggering, which is the only failure you cannot see by reading the file.
 
 ## Maintaining it
 
