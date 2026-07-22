@@ -48,7 +48,8 @@ Use this repository to:
 ├── .env.example              # variable NAMES only, never values
 ├── .agents/
 │   └── skills/
-│       └── ai-class-operating-partner/ # portable class workflow skill
+│       ├── ai-class-operating-partner/ # portable class workflow skill
+│       └── local-dev-servers/          # running local dev servers with an agent
 ├── experiments/              # DISPOSABLE — one folder per experiment
 │   └── README.md
 ├── knowledge/                # PERMANENT — extracted, transferable output
@@ -223,6 +224,18 @@ Use it explicitly with a prompt such as:
 
 ```text
 Use $ai-class-operating-partner to turn this assignment into a tested experiment.
+```
+
+A second, situational skill lives at
+[`.agents/skills/local-dev-servers/SKILL.md`](.agents/skills/local-dev-servers/SKILL.md).
+Reach for it when a project needs a backend and a frontend running at the same
+time, when a dev server will not stay up under a coding agent, or when a
+`localhost` URL will not open. It covers telling the three lookalike causes
+apart, launching servers so they survive the session, collapsing two processes
+into one, and verifying an app really is reachable before saying so.
+
+```text
+Use $local-dev-servers to get my backend and frontend running and give me a URL that opens.
 ```
 
 If an AI tool does not automatically discover `.agents/skills/`, point it to the

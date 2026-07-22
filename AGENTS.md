@@ -167,19 +167,22 @@ category while allowing the first to be freely created and destroyed.
 - Do not commit, push, or open a pull request without being asked.
 - Do not claim completion without evidence.
 
-## 13. Portable Class Skill
+## 13. Portable Class Skills
 
-- The canonical repo-local skill is
-  `.agents/skills/ai-class-operating-partner/SKILL.md`.
-- Use it for class experiments, prototypes, coding, debugging, business or data
-  analysis, spreadsheets, documents, presentations, UI work, and experiment
-  preservation.
-- The skill complements this file; this file wins if instructions conflict.
+- Repo-local skills live under `.agents/skills/`. There are two:
+  - `ai-class-operating-partner/SKILL.md` — use for class experiments,
+    prototypes, coding, debugging, business or data analysis, spreadsheets,
+    documents, presentations, UI work, and experiment preservation.
+  - `local-dev-servers/SKILL.md` — use when starting or troubleshooting
+    long-running local dev servers, when an app needs a backend and a frontend
+    running at once, or when a localhost URL will not open.
+- The skills complement this file; this file wins if instructions conflict.
 - Do not assume a clone has the repository owner's user-level, system, plugin,
   or other project skills installed.
-- Keep the portable skill free of credentials, personal paths, private business
+- Keep the portable skills free of credentials, personal paths, private business
   context, production configuration, and unlicensed third-party skill text.
-- Record changes to the skill's repository-wide scope in `docs/decisions/`.
+- Record a new skill, or a change to a skill's repository-wide scope, in
+  `docs/decisions/`.
 
 ---
 

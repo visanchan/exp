@@ -1,0 +1,4 @@
+interface:
+  display_name: "Local Dev Servers"
+  short_description: "Start, verify and hand off local dev servers that stay running"
+  default_prompt: "Use $local-dev-servers to get my backend and frontend running and give me a URL that actually opens."
