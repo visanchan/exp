@@ -88,31 +88,66 @@ check + test happened while writing and cost nothing.
 ## Test cases
 | # | Case | Input / setup | Expected | Actual | Pass |
 |---|---|---|---|---|---|
-| 1 | All contract paths present | Repo at current HEAD | Exit 0, every path `OK` | see Results | see Results |
-| 2 | Missing path detected | Non-existent root passed to checker | Every path reported missing | see Results | see Results |
-| 3 | Experiment's own folder present | Repo at current HEAD | `experiments/` non-empty | see Results | see Results |
+| 1 | All contract paths present | Repo at current HEAD | Exit 0, every path `OK` | 16/16 present | Yes |
+| 2 | Missing path detected | Non-existent root passed to checker | Every path reported missing | 16/16 reported missing | Yes |
+| 3 | Experiment's own folder present | Repo at current HEAD | `experiments/` non-empty | found `exp-001-scaffold-check` | Yes |
 
 How tests were run:
 
 ```bash
 python experiments/exp-001-scaffold-check/tests/test_structure.py
+# 3/3 cases passed, exit 0
 ```
 
+Raw output: `artifacts/test-run-2026-07-22.txt`
+
 ## Results
-Filled in after the run — see the Results section update below.
+3/3 cases passed, exit code 0. Case 2 matters most: it confirms the checker can
+actually report failure, so case 1's green result means something. A structure
+check that cannot fail is not a test.
+
+- Criterion 1 — met. README written and committed (`a69646f`) before `src/` existed.
+- Criterion 2 — met. Index row added with status `Active` in the same commit.
+- Criterion 3 — met. Real run, real exit code, output saved as an artifact.
+- Criterion 4 — met. See `knowledge/lessons-learned/exp-001-scaffold-check.md`.
+- Criterion 5 — met. Keep/delete proposal presented and approved before deletion.
+- Criterion 6 — met. Index row moved to `Removed`, row retained.
+
+**Hypothesis: partially wrong.** The predicted friction was in the cleanup
+checklist and the index row. Neither bit. The templates absorbed a near-empty
+experiment without complaint — `—` in `Preserved Artifacts` and `Main Lesson`
+reads fine while the experiment is `Active`. The real friction was somewhere the
+hypothesis did not look: the lifecycle in `README.md` says nothing about *when to
+commit*, so "define before code" is a rule with no enforcement point. It only
+held here because the define step was committed separately on purpose.
 
 ## Problems encountered
 | Problem | Symptom | Root cause | Resolution / status |
 |---|---|---|---|
-| | | | |
+| Two commit-message formats in play | First initialization commit landed with subject `@` | PowerShell here-string syntax (`@'...'@`) used in the Bash tool, which does not parse it | Amended with a POSIX heredoc (`-F -`). Shell-specific syntax must match the tool being used. |
+| Repo default branch was `master` | Local `main` had no upstream; remote defaulted to `master` | Repo created before the branch-naming decision | `git branch -m main`, pushed, `gh repo edit --default-branch main`. Stale `origin/master` still present. |
+| "Define before code" is unenforced | Nothing would have caught writing `src/` first | Lifecycle documents the order but names no checkpoint | Recorded as a lesson; suggested fix is to make the define step its own commit. |
 
 ## Lessons learned
-Filled in after the run.
+
+- A structure check is only meaningful if it is proven able to fail. Test the
+  negative case or the green result is decoration.
+- Shell-specific syntax must match the tool executing it — PowerShell here-strings
+  silently become literal text under Bash, corrupting commit messages rather than
+  erroring.
+- Process rules stated as prose have no enforcement point. "Fill the README before
+  writing code" becomes checkable only when the define step is its own commit.
+- Set the default branch before the first push; renaming afterwards leaves a stale
+  remote branch behind.
+
+Full write-up: `knowledge/lessons-learned/exp-001-scaffold-check.md`
 
 ## Reusable outputs
 | Output | Type | Destination |
 |---|---|---|
-| | pattern / prompt / snippet / tool note | `knowledge/.../<file>.md` |
+| Full lessons write-up | lessons | `knowledge/lessons-learned/exp-001-scaffold-check.md` |
+| Define-before-code as a commit boundary | pattern | `knowledge/reusable-patterns/define-before-code-commit.md` |
+| Contract-check script (pure check + exit-code runner) | snippet | `knowledge/code-snippets/repo-structure-check.md` |
 
 ## Security considerations
 - Secrets used: none
