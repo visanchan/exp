@@ -173,6 +173,7 @@ python -m unittest discover -s tests -t .
 | 4 | Price quarantine | serialize entire story context, search it | No price, stock, weight or shipping string present | None of `890`, `฿`, `In stock`, `700 g`, `Free shipping` appear | ✅ |
 | 5 | Full Reel | Mona Lisa / Curator / Thai / funny / 6 shots / medium | 6 images, audit clean, plays 9:16 | 6 PNGs at 1024×1536, audit clean, $0.2558, 3 min | ✅ |
 | 6 | Cat consistency — brand | run `3b5e7e1d9135`, shots 1–6 | Drift graded 1–5 | **2/5** — see Results | ⚠️ |
+| 6b | Cat consistency — repeat | run `3a9fef0f39b0`, same settings | Reproduce or refute test 6 | **2/5** — drift reproduced, different symptom | ⚠️ |
 | 7 | Cat consistency — uploaded | uploaded cat photo as reference | Drift graded, compared to test 6 | **NOT RUN** — no cat photo available to upload | ❌ |
 | 8 | Thai voice absent | browser with no Thai voice | Falls back to captions | Code path written and reviewed; **not executed** in a voice-less browser | ⚠️ |
 | 9 | Host guard, HTTP layer | `POST /api/reel` with `evil.test` | 400 before any work | `{"error": "refused: 'evil.test' is not 'themeowseum.pages.dev'"}` | ✅ |
@@ -242,6 +243,26 @@ Measured against the success criteria.
    word *scratch* from "scratch painting", and the generator reverts to the
    famous artwork. The instruction in `_protagonist_rule` to "describe the same
    cat with identical markings" was followed in letter and missed in substance.
+
+   **Reproduced in a second run** (`3a9fef0f39b0`, identical settings), with a
+   different symptom and the same cause. Shot 1: a four-legged tabby wearing a
+   white ribbon badge in front of the corrugated scratch panel. Shot 5: an
+   *anthropomorphic* tabby standing upright in a tweed jacket and wire glasses,
+   no badge, with the product gone from the frame entirely — replaced by a
+   miniature chair and an abstract print. Prompts 1 and 3 carry "Cat the
+   Curator, a sleek tabby cat with a ribbon badge"; prompt 5 is only "Cat the
+   Curator feigns shock at the playful act of Playful Cat, then smirks". The
+   shot critic had explicitly reported that it "made all prompts
+   self-contained". It had not, and nothing checked the claim.
+
+   Two runs, two grades of 2/5, one mechanism: the character description is
+   present in some prompts and absent from others, and whatever is absent gets
+   reinvented. Run 1 lost the coat; run 2 lost the body plan.
+
+   **The audit called both runs clean.** It reads narration, caption and image
+   prompt text, so visual drift is structurally invisible to it. A text-level
+   grounding audit says nothing about whether the images tell one story — a real
+   boundary on what this technique buys.
 4. **Brand protagonist beats uploaded photo — untested.** Cannot be answered
    with only one arm of the comparison run.
 
