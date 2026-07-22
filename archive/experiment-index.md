@@ -24,7 +24,7 @@ experiment.
 
 | ID | Experiment | Date | Status | Main Lesson | Preserved Artifacts | Original Code Removed |
 |---|---|---|---|---|---|---|
-| _(no experiments yet)_ | | | | | | |
+| exp-001 | scaffold-check | 2026-07-22 | Removed | A process rule with no artifact boundary is unenforced; make the define step its own commit | [lessons](../knowledge/lessons-learned/exp-001-scaffold-check.md) + [pattern](../knowledge/reusable-patterns/define-before-code-commit.md) + [snippet](../knowledge/code-snippets/repo-structure-check.md) | Yes |
 
 <!--
 Row format — copy, fill in, keep newest at the bottom:
