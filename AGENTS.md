@@ -141,6 +141,11 @@ category while allowing the first to be freely created and destroyed.
 - **Avoid pushing to GitHub unless the work is coherent and safe to share.** Do
   not push broken, half-finished, or sensitive work merely to save progress.
 - Prefer a branch per experiment: `experiment/exp-001-short-description`.
+- **Commit the define step on its own, before any source file exists.** That
+  commit contains only the experiment `README.md` (objective, hypothesis, success
+  criteria) and the `Active` index row. This is what makes "define before code"
+  checkable rather than an honour-system rule — see
+  `knowledge/reusable-patterns/define-before-code-commit.md`.
 - Use clear commit messages:
 
   ```text
