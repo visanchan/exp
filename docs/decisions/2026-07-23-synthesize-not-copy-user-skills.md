@@ -110,6 +110,15 @@ skill here to ship a runnable artifact rather than guidance alone, which is
 deliberate: rebuilding clipboard handling per use would produce a different bug
 each time.
 
+Verified in a browser on 2026-07-23, not only by structural inspection. A
+harness filled the form the way a person would — one radio choice, a
+multi-select with some options left unticked, an "Other" option with free text,
+one question skipped entirely, and a section comment — then called the shipped
+`collect()` function and asserted on its output. Ten assertions passed. The two
+that matter most cover the skipped question: it must appear as "not answered"
+*and* be listed separately, because a skip silently reading as a "no" would send
+an agent off to build the wrong thing with no signal that anything went wrong.
+
 ## Consequences
 
 - A classmate cloning the repository gets nine usable skills and no private
