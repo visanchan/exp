@@ -1,7 +1,0 @@
-# Generated Reel output and any uploaded cat photo. Personal data and API
-# output — never committed. See the Security section of README.md.
-artifacts/
-!artifacts/.gitkeep
-
-__pycache__/
-*.pyc
