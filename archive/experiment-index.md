@@ -24,7 +24,7 @@ experiment.
 
 | ID | Experiment | Date | Status | Main Lesson | Preserved Artifacts | Original Code Removed |
 |---|---|---|---|---|---|---|
-| _(no experiments yet)_ | | | | | | |
+| exp-001 | scaffold-check | 2026-07-22 | Active | — | — | No |
 
 <!--
 Row format — copy, fill in, keep newest at the bottom:
