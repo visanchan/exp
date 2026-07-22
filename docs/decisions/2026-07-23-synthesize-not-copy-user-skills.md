@@ -140,9 +140,33 @@ All five now clear 4.5:1 on body text, muted text and button labels; the tightes
 is 4.54:1. Pastel palettes fail this quietly and often, so the check is worth
 repeating on any future theme.
 
+**Fourth addendum, same day — `scrutinize`.** Another owner-authored user-level
+skill identified as worth keeping. Provenance checked: no third-party
+attribution, no licence marker, no private context.
+
+Unlike `debug-mantra`, this one was **not** merged. It overlaps
+`reviewing-ai-written-code` by roughly a quarter — both look at a change before
+it is kept — but the stances are different jobs. `scrutinize` is an outsider
+review that asks whether the change should exist in that shape at all, and then
+traces real code paths end-to-end to verify the claims. `reviewing-ai-written-code`
+assumes the change is wanted and hunts the defect classes generated code
+specifically produces: invented APIs, silent scope creep, tautological tests,
+fabricated self-reports.
+
+`write-a-repo-skill` allows either merging near-duplicates or sharpening the
+boundary. Sharpening was right here, so both now carry a reciprocal "related but
+different" note stating which to reach for and that `scrutinize` runs first —
+if the answer is "this should not exist", the defect hunt is moot. Their
+descriptions were also written to trigger on different phrasings, so they do not
+compete for the same request.
+
+One addition to the original: a closing section on scrutinising your own plan
+before building, since step 1 is far cheaper applied before the code exists than
+after.
+
 ## Consequences
 
-- A classmate cloning the repository gets nine usable skills and no private
+- A classmate cloning the repository gets ten usable skills and no private
   material.
 - Coverage is narrower than the owner's environment, deliberately.
 - The excluded skills stay available to the owner locally; nothing was removed

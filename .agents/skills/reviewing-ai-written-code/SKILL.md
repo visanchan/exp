@@ -13,6 +13,13 @@ usual signals — hesitant naming, obvious gaps, visible confusion — are absen
 Treat `AGENTS.md` at the repository root as authoritative if it and this skill
 ever disagree.
 
+**Related but different:** `scrutinize` asks whether a change should exist in
+that shape at all, and traces real code paths to verify it does what it claims.
+This skill assumes the change is wanted and hunts the defect classes that
+*generated* code specifically produces. On anything that matters, run
+`scrutinize` first — if the answer is "this shouldn't exist", the defect hunt is
+moot.
+
 ## The core rule
 
 **An agent's description of its work is a claim, not evidence.**

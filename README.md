@@ -51,6 +51,7 @@ Use this repository to:
 │       ├── ai-class-operating-partner/ # class workflow, the default
 │       ├── local-dev-servers/          # running dev servers with an agent
 │       ├── debug-mantra/               # four-step debugging discipline
+│       ├── scrutinize/                # should this exist? does it do what it claims?
 │       ├── reviewing-ai-written-code/  # checking generated code before keeping it
 │       ├── session-handoff/            # carrying work across sessions
 │       ├── business-analysis/          # business case, unit economics, break-even
@@ -233,13 +234,14 @@ Use it explicitly with a prompt such as:
 Use $ai-class-operating-partner to turn this assignment into a tested experiment.
 ```
 
-Eight situational skills sit alongside it, indexed in
+Nine situational skills sit alongside it, indexed in
 [`.agents/skills/README.md`](.agents/skills/README.md):
 
 | Skill | Reach for it when |
 |---|---|
 | [`local-dev-servers`](.agents/skills/local-dev-servers/SKILL.md) | A project needs a backend and a frontend running at once, a dev server will not stay up under an agent, or a `localhost` URL will not open |
 | [`debug-mantra`](.agents/skills/debug-mantra/SKILL.md) | Something is broken, throwing or failing — especially after a couple of attempted fixes have already missed |
+| [`scrutinize`](.agents/skills/scrutinize/SKILL.md) | Reviewing a plan, PR or design — should it exist in this shape, and does the traced path do what it claims? |
 | [`reviewing-ai-written-code`](.agents/skills/reviewing-ai-written-code/SKILL.md) | Before keeping or committing code an agent wrote |
 | [`session-handoff`](.agents/skills/session-handoff/SKILL.md) | A session is ending or straining, or work passes to another agent or person |
 | [`business-analysis`](.agents/skills/business-analysis/SKILL.md) | Deciding whether something is worth doing, comparing options, or presenting numbers someone must act on |

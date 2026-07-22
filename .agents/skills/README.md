@@ -14,7 +14,8 @@ anything here.
 | [`ai-class-operating-partner`](ai-class-operating-partner/SKILL.md) | Turning a class task into a defined, tested experiment with the learning preserved. The default for repository work. |
 | [`local-dev-servers`](local-dev-servers/SKILL.md) | An app needs a backend and a frontend running at once, a dev server will not stay up under an agent, or a `localhost` URL will not open. |
 | [`debug-mantra`](debug-mantra/SKILL.md) | Something is broken, throwing or failing — especially after two or three attempted fixes have already missed. Recite the mantra, then work the four steps in order. |
-| [`reviewing-ai-written-code`](reviewing-ai-written-code/SKILL.md) | Before keeping, committing, or approving code an agent wrote. |
+| [`scrutinize`](scrutinize/SKILL.md) | Reviewing a plan, PR or design — should this exist in this shape, and does the real code path do what it claims? Run before the defect hunt. |
+| [`reviewing-ai-written-code`](reviewing-ai-written-code/SKILL.md) | Before keeping, committing, or approving code an agent wrote. The defect classes generated code specifically produces. |
 | [`session-handoff`](session-handoff/SKILL.md) | A session is ending or straining, or work is passing to another agent or person. |
 | [`business-analysis`](business-analysis/SKILL.md) | Deciding whether something is worth doing, comparing options, working out unit economics or a break-even, or presenting numbers someone has to act on. |
 | [`market-sizing`](market-sizing/SKILL.md) | Estimating how big an opportunity is — TAM, SAM, SOM — so the number survives being questioned. |

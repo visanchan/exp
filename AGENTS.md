@@ -183,8 +183,10 @@ category while allowing the first to be freely created and destroyed.
     servers, backend plus frontend, or a localhost URL that will not open.
   - `debug-mantra/SKILL.md` — four-step debugging discipline, recited then
     applied in order, before any fix is proposed.
-  - `reviewing-ai-written-code/SKILL.md` — reviewing generated code before
-    keeping or committing it.
+  - `scrutinize/SKILL.md` — outsider review of a plan, PR or design: should it
+    exist in this shape, and does the traced code path do what it claims?
+  - `reviewing-ai-written-code/SKILL.md` — the defect classes generated code
+    specifically produces, before keeping or committing it.
   - `session-handoff/SKILL.md` — carrying work across a context limit, a session
     end, or a change of agent.
   - `business-analysis/SKILL.md` — turning a business question into an analysis

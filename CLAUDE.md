@@ -16,6 +16,8 @@ at `.agents/skills/README.md` lists all of them:
   localhost URL won't open"
 - `.agents/skills/debug-mantra/SKILL.md` — four-step debugging discipline;
   recite, then reproduce / fail path / falsify / cross-reference
+- `.agents/skills/scrutinize/SKILL.md` — should this change exist, and does the
+  real code path do what it claims?
 - `.agents/skills/reviewing-ai-written-code/SKILL.md` — checking generated code
   before keeping it
 - `.agents/skills/session-handoff/SKILL.md` — carrying work across sessions
