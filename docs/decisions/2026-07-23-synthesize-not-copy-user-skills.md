@@ -53,13 +53,25 @@ an agent is doing the work — not a proportional sample of the source collectio
 Skills whose value is inseparable from private context were excluded entirely
 rather than genericised into something vague.
 
+**Addendum, same day.** Two business skills were promoted out of
+`ai-class-operating-partner`'s general scope into standalone skills on request:
+
+- `business-analysis` — decision framing, unit economics, break-even,
+  sensitivity, and writing up so the recommendation leads.
+- `market-sizing` — TAM/SAM/SOM, three independent estimation methods,
+  triangulation, and the sanity checks that catch the usual errors.
+
+Both are original text built on standard, widely taught methodology, with
+synthetic worked examples. Neither draws on the excluded private or third-party
+material. Financial modelling, inventory planning and customer-discovery methods
+remain inside `ai-class-operating-partner` for now; promote them the same way if
+they prove to be needed often enough to justify separate skills.
+
 ## Consequences
 
-- A classmate cloning the repository gets six usable skills and no private
+- A classmate cloning the repository gets eight usable skills and no private
   material.
-- Coverage is narrower than the owner's environment, deliberately. Business
-  analysis, market sizing, financial modelling and similar remain within
-  `ai-class-operating-partner`'s scope rather than becoming separate skills.
+- Coverage is narrower than the owner's environment, deliberately.
 - The excluded skills stay available to the owner locally; nothing was removed
   from the source environment.
 - Future additions follow `write-a-repo-skill`, which encodes the same

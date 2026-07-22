@@ -182,6 +182,10 @@ category while allowing the first to be freely created and destroyed.
     keeping or committing it.
   - `session-handoff/SKILL.md` — carrying work across a context limit, a session
     end, or a change of agent.
+  - `business-analysis/SKILL.md` — turning a business question into an analysis
+    that changes a decision; unit economics, break-even, sensitivity.
+  - `market-sizing/SKILL.md` — TAM, SAM and SOM estimated three ways and
+    triangulated.
   - `write-a-repo-skill/SKILL.md` — adding or improving a skill here, including
     the provenance and privacy check.
 - The skills complement this file; this file wins if instructions conflict.

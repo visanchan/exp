@@ -19,4 +19,7 @@ at `.agents/skills/README.md` lists all of them:
 - `.agents/skills/reviewing-ai-written-code/SKILL.md` — checking generated code
   before keeping it
 - `.agents/skills/session-handoff/SKILL.md` — carrying work across sessions
+- `.agents/skills/business-analysis/SKILL.md` — business case, unit economics,
+  break-even, sensitivity
+- `.agents/skills/market-sizing/SKILL.md` — TAM / SAM / SOM, triangulated
 - `.agents/skills/write-a-repo-skill/SKILL.md` — adding a skill here safely

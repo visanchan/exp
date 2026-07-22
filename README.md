@@ -53,6 +53,8 @@ Use this repository to:
 │       ├── systematic-debugging/       # finding causes, not guessing fixes
 │       ├── reviewing-ai-written-code/  # checking generated code before keeping it
 │       ├── session-handoff/            # carrying work across sessions
+│       ├── business-analysis/          # business case, unit economics, break-even
+│       ├── market-sizing/              # TAM / SAM / SOM, triangulated
 │       └── write-a-repo-skill/         # adding a skill here safely
 ├── experiments/              # DISPOSABLE — one folder per experiment
 │   └── README.md
@@ -230,7 +232,7 @@ Use it explicitly with a prompt such as:
 Use $ai-class-operating-partner to turn this assignment into a tested experiment.
 ```
 
-Five situational skills sit alongside it, indexed in
+Seven situational skills sit alongside it, indexed in
 [`.agents/skills/README.md`](.agents/skills/README.md):
 
 | Skill | Reach for it when |
@@ -239,6 +241,8 @@ Five situational skills sit alongside it, indexed in
 | [`systematic-debugging`](.agents/skills/systematic-debugging/SKILL.md) | Something throws or returns the wrong value — especially after a couple of attempted fixes have already missed |
 | [`reviewing-ai-written-code`](.agents/skills/reviewing-ai-written-code/SKILL.md) | Before keeping or committing code an agent wrote |
 | [`session-handoff`](.agents/skills/session-handoff/SKILL.md) | A session is ending or straining, or work passes to another agent or person |
+| [`business-analysis`](.agents/skills/business-analysis/SKILL.md) | Deciding whether something is worth doing, comparing options, or presenting numbers someone must act on |
+| [`market-sizing`](.agents/skills/market-sizing/SKILL.md) | Estimating an opportunity — TAM, SAM, SOM — so the number survives being questioned |
 | [`write-a-repo-skill`](.agents/skills/write-a-repo-skill/SKILL.md) | A method has proven itself often enough to be worth capturing here |
 
 ```text
