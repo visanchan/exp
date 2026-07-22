@@ -12,14 +12,66 @@ agent "didn't use the skill".
 
 ---
 
-## How to run it
+## Two variants — run both, they measure different things
+
+**Variant A (below) is a wording audit, not a discovery test.** Most agent
+environments load `AGENTS.md` and the skill catalog into context automatically
+at session start. When they do, the descriptions are already in front of the
+agent, and matching a scenario to one is far easier than noticing a skill exists
+in the first place. A perfect score on Variant A tells you the descriptions are
+*distinguishable from each other*. It does not tell you they *trigger*.
+
+**Variant B is the discovery test.** It contains no mention of skills at all, so
+the only thing being measured is whether the agent goes looking. Run it first —
+once an agent has seen Variant A, it cannot be used for Variant B in the same
+session.
+
+| | Variant A | Variant B |
+|---|---|---|
+| Measures | Are descriptions distinguishable? | Does the skill get found at all? |
+| Mentions skills | Yes | No |
+| Valid when the catalog is pre-loaded | Yes | Yes |
+| Sessions needed | 1 | 1 fresh session per scenario |
+
+---
+
+## Variant B — the discovery test
+
+For each scenario, open a **fresh session** and paste **only the quoted request**
+— nothing about skills, nothing about this test. Then observe what the agent
+does before answering.
+
+Score it on behaviour, not on its self-report:
+
+- **Pass** — it opened the intended `SKILL.md` (or the skills index) before
+  answering. Check its tool calls or file reads; do not just ask it afterwards.
+- **Partial** — it produced advice consistent with the skill but never opened
+  the file. The skill did not fire; the model already knew some of it.
+- **Fail** — it neither opened the file nor followed the method.
+
+Use the same ten requests as Variant A, one per session, in whatever order.
+Three or four is usually enough to see the pattern — if none of the first three
+fire, the problem is systemic and testing seven more will not add information.
+
+**If most come back Partial:** the descriptions are fine and the loading
+instruction is weak. Strengthen the directive in `AGENTS.md` §13, not the
+individual descriptions.
+
+**If some fire and others do not:** compare their descriptions. The ones that
+fire share something the others lack — usually the person's own words rather
+than a category name.
+
+---
+
+## Variant A — the wording audit
 
 1. Open a **fresh session** with the agent you want to test, in a clone of this
-   repository. A fresh session matters — an agent that has already been working
-   here knows too much.
+   repository.
 2. Copy **only the block below**, between the markers, and paste it in. Do not
    paste the answer key that follows it.
-3. Record the results in the log at the bottom of this file.
+3. Record the results in the log at the bottom of this file, **including whether
+   the catalog was pre-loaded** — without that note the score is not
+   interpretable later.
 
 ---
 
@@ -147,10 +199,13 @@ sharp enough — fix both descriptions, not just one.
 
 - **A wrong answer is the useful outcome.** It names a description that does not
   trigger, which is the only thing this test can tell you.
-- **Treat a perfect score sceptically.** The agent sees the whole prompt at once,
-  so the blindness is a discipline instruction rather than an enforced
-  condition. That is why the prompt demands the reasoning behind each choice —
-  read that, not the score.
+- **Treat a perfect Variant A score sceptically**, and check what was in context
+  before believing it. If the catalog was pre-loaded — which is the normal case
+  — the agent was matching descriptions it could already see, not discovering
+  anything. The score is still worth having: it says the descriptions are
+  distinguishable from each other. It is not evidence that they fire.
+- **Only Variant B is evidence of discovery**, and only from observed behaviour.
+  An agent's account of whether it "would have" loaded a skill is not data.
 - **Low confidence is a finding too**, even when the answer is right. It means
   the description is doing less work than it should.
 - **"None" is sometimes correct.** If a scenario genuinely has no matching
@@ -174,6 +229,7 @@ is visible at a glance.
 
 Record each run. A result that is never written down cannot show a trend.
 
-| Date | Agent / tool | Score | Notes |
-|---|---|---|---|
-| | | | |
+| Date | Agent / tool | Variant | Score | Catalog pre-loaded? | Notes |
+|---|---|---|---|---|---|
+| 2026-07-23 | Codex | A | 10/10 | **Yes** — `AGENTS.md` and the skill catalog were supplied automatically at session start | Not a discovery result; descriptions are distinguishable. Scenarios 2 and 8 were separated correctly. Confirmed Codex loads `AGENTS.md` without being asked. Variant B added afterwards because of this run. |
+| | | | | | |
