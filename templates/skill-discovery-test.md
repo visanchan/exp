@@ -67,15 +67,19 @@ than a category name.
 
 1. Open a **fresh session** with the agent you want to test, in a clone of this
    repository.
-2. Copy **only the block below**, between the markers, and paste it in. Do not
-   paste the answer key that follows it.
-3. Record the results in the log at the bottom of this file, **including whether
+2. Paste **block 1 only** and wait for the ten answers. Then paste **block 2**.
+   They are split on purpose: block 2 names a skill file, which would give
+   away one of the answers if it were visible during block 1.
+3. Do not paste the answer key that follows them.
+4. Record the results in the log at the bottom of this file, **including whether
    the catalog was pre-loaded** — without that note the score is not
    interpretable later.
 
 ---
 
-<!-- ==== BEGIN PROMPT — copy from here ==== -->
+### Block 1 — paste first
+
+<!-- ==== BEGIN BLOCK 1 — copy from here ==== -->
 
 ```text
 You are working in this repository. Read AGENTS.md first — it governs your work here.
@@ -124,7 +128,15 @@ matched from the numbering.
 Also answer honestly: did you read AGENTS.md automatically at the start of this
 session, or only because I told you to? I need to know whether it is discovered
 by default in your environment.
+```
 
+<!-- ==== END BLOCK 1 ==== -->
+
+### Block 2 — paste after the ten answers
+
+<!-- ==== BEGIN BLOCK 2 — copy from here ==== -->
+
+```text
 === PART 2: FIX WHAT THE TEST EXPOSED ===
 
 For every mismatch or low-confidence answer:
@@ -169,7 +181,7 @@ DO NOT create any new skill yet. Propose only — I will choose.
 - Report back: the Part 1 table, what you fixed, and your Part 3 proposals.
 ```
 
-<!-- ==== END PROMPT — stop copying here ==== -->
+<!-- ==== END BLOCK 2 — stop copying here ==== -->
 
 ---
 
