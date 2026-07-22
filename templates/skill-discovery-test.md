@@ -43,11 +43,19 @@ does before answering.
 
 Score it on behaviour, not on its self-report:
 
-- **Pass** — it opened the intended `SKILL.md` (or the skills index) before
-  answering. Check its tool calls or file reads; do not just ask it afterwards.
-- **Partial** — it produced advice consistent with the skill but never opened
-  the file. The skill did not fire; the model already knew some of it.
+- **Pass** — it opened the intended `SKILL.md` (or the skills index) **and acted
+  on it** before answering. Check its tool calls or file reads; do not just ask
+  it afterwards.
+- **Partial** — either it produced advice consistent with the skill without ever
+  opening the file (the skill did not fire; the model already knew some of it),
+  **or** it found the skill and announced what it would do, but the behaviour
+  was never observed.
 - **Fail** — it neither opened the file nor followed the method.
+
+**Let the run finish.** Stopping an agent after it says "I'll verify the output"
+records an intention, not a result — the very substitution
+`artifact-verification` exists to prevent. If a run is cut short, score it
+partial and say so in the log rather than rounding up.
 
 Use the same eleven requests as Variant A, one per session, in whatever order.
 Three or four is usually enough to see the pattern — if none of the first three
@@ -247,4 +255,5 @@ Record each run. A result that is never written down cannot show a trend.
 | Date | Agent / tool | Variant | Score | Catalog pre-loaded? | Notes |
 |---|---|---|---|---|---|
 | 2026-07-23 | Codex | A | 10/10 | **Yes** — `AGENTS.md` and the skill catalog were supplied automatically at session start | Not a discovery result; descriptions are distinguishable. Scenarios 2 and 8 were separated correctly. Confirmed Codex loads `AGENTS.md` without being asked. Variant B added afterwards because of this run. |
+| 2026-07-23 | Codex | B | 2 pass, 1 partial | Yes | Test 1 (build me a tool → `requirements-workbook`) **pass** — asked before building. Test 3 (NaN bug → `debug-mantra`) **pass** — reproduction demanded before any fix. Test 2 (chart → `artifact-verification`) **discovery pass, execution unobserved**: it named the skill unprompted and stated it would open and verify the PNG, but the run was stopped before it did. Scored partial, because a stated intention is a claim, not evidence — the rule that skill exists to enforce. Also cited `references/capability-router.md`, so discovery reaches into a skill's reference files, not just its `SKILL.md`. |
 | | | | | | |
