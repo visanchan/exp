@@ -167,6 +167,20 @@ category while allowing the first to be freely created and destroyed.
 - Do not commit, push, or open a pull request without being asked.
 - Do not claim completion without evidence.
 
+## 13. Portable Class Skill
+
+- The canonical repo-local skill is
+  `.agents/skills/ai-class-operating-partner/SKILL.md`.
+- Use it for class experiments, prototypes, coding, debugging, business or data
+  analysis, spreadsheets, documents, presentations, UI work, and experiment
+  preservation.
+- The skill complements this file; this file wins if instructions conflict.
+- Do not assume a clone has the repository owner's user-level, system, plugin,
+  or other project skills installed.
+- Keep the portable skill free of credentials, personal paths, private business
+  context, production configuration, and unlicensed third-party skill text.
+- Record changes to the skill's repository-wide scope in `docs/decisions/`.
+
 ---
 
 **Final principle:** temporary code may be deleted; useful knowledge must survive.

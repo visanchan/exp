@@ -1,0 +1,4 @@
+interface:
+  display_name: "AI Class Operating Partner"
+  short_description: "Run practical, evidence-based class experiments"
+  default_prompt: "Use $ai-class-operating-partner to turn my class task into a practical, tested experiment and preserve the useful learning."

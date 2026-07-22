@@ -46,6 +46,9 @@ Use this repository to:
 ├── AGENTS.md                 # rules for AI agents working here
 ├── .gitignore
 ├── .env.example              # variable NAMES only, never values
+├── .agents/
+│   └── skills/
+│       └── ai-class-operating-partner/ # portable class workflow skill
 ├── experiments/              # DISPOSABLE — one folder per experiment
 │   └── README.md
 ├── knowledge/                # PERMANENT — extracted, transferable output
@@ -209,6 +212,21 @@ Agent rules live in [`AGENTS.md`](AGENTS.md). Point any AI coding tool at that
 file before it starts. It covers scope, inspection-before-change, experiment
 isolation, secrets, dependencies, testing, knowledge preservation, and the
 keep/delete proposal required before any destructive cleanup.
+
+The repository also carries a portable class skill at
+[`.agents/skills/ai-class-operating-partner/SKILL.md`](.agents/skills/ai-class-operating-partner/SKILL.md).
+It combines the reusable coding, analytics, business, UI, artifact, testing, and
+knowledge-preservation methods needed for typical class work. It has no private
+machine or project dependency, so it travels with the clone.
+
+Use it explicitly with a prompt such as:
+
+```text
+Use $ai-class-operating-partner to turn this assignment into a tested experiment.
+```
+
+If an AI tool does not automatically discover `.agents/skills/`, point it to the
+skill file directly. Repository rules in `AGENTS.md` remain authoritative.
 
 ---
 
